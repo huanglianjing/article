@@ -40,13 +40,13 @@ origin表示远程仓库，每个仓库包含本地仓库和对应的远程仓�
 
 通过 git commit 可以将所有暂存的文件提交，文件再次变为未修改状态，而 git reset HEAD file 则会将暂存的文件退回到已修改状态。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/version_control/git_file_stages.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/version_control/git_file_stages.png)
 
 从上图中可以看到仓库文件的状态流转。不属于仓库的文件是 untracked 状态，属于仓库的文件是 unmodified 状态，作出更改后变为modified状态，将这些文件添加到暂存区就变成了 staged 状态，最后通过提交更新，将暂存区的文件提交到仓库，又变成了 unmodified 状态。
 
 文件修改在不同状态之间流转、以及对应的命令如下图所示：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/version_control/git_status_cmd.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/version_control/git_status_cmd.png)
 
 # 2. 配置
 
@@ -294,15 +294,15 @@ git merge-base <branch1> <branch2>
 
 假设当前分支 dev 基于 release 分支开发，并且又提交了两次 commit C1 和 C2，而 release 分支在我们新建 dev 分支后又有了新的提交。
 
-![git_before_rebase](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/version_control/git_before_rebase.png)
+![git_before_rebase](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/version_control/git_before_rebase.png)
 
 变基就是从基于的 release 分支最新的一次提交，参照 commit C1 和 C2，生成新的 commit C1' 和 C2'，然后将 dev 分支的指针指向 C2‘。进行变基操作需要当前的工作区没有未提交的修改，如果有可以先提交或者暂时 stash。当然变基操作的前提是这些分支和基于的分支的改动没有代码冲突，否则建议先执行从 release 分支合并到 dev 分支的操作，解决冲突问题，然后再进行变基。
 
-![git_after_rebase](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/version_control/git_after_rebase.png)
+![git_after_rebase](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/version_control/git_after_rebase.png)
 
 如果不变基而是通过 merge 合并分支，会生成一个两条分支的合并。
 
-![git_merge](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/version_control/git_merge.png)
+![git_merge](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/version_control/git_merge.png)
 
 而通过 rebase 将分支变基再合并则往往会变成一条直线的提交，提交记录更加优雅整洁。当然如果变基过程有文件冲突的话，需要解决冲突，变基还是会产生两条分支合并的提交记录。
 

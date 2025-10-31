@@ -81,7 +81,7 @@ import _ "net/http/pprof"
 
 打开后可以看到：
 
-![pprof_http_brower_report](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/pprof_http_brower_report.png)
+![pprof_http_brower_report](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/pprof_http_brower_report.png)
 
 可以看到一些分析指标的数量以及链接，可以点击链接查看详情。这些分析指标对应的含义是：
 
@@ -410,17 +410,17 @@ go tool pprof -http=:8081 profile
 
 自动打开网站，默认显示的是程序调用的链路以及每个调用的耗时，在菜单选择 VIEW - Graph 也可以显示这个。
 
-![pprof_http_brower_ui](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/pprof_http_brower_ui.png)
+![pprof_http_brower_ui](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/pprof_http_brower_ui.png)
 
 代码中主要做的事情是：开启一个协程，然后在循环中不断地给字符串追加内容、向标准输出输出一行日志，然后睡眠10毫秒。在上图左侧的main函数可以看到，往下的箭头指向了三块，分别对应 add 函数耗时 10ms，log.Printf 函数耗时 200ms，time.Sleep 函数耗时 20ms。由此可以分析得出结论，打印日志到标准输出比其他两项更加耗时。
 
 在菜单选择 VIEW - Top 可以列出CPU使用量的列表，并且可以选择排序的列。
 
-![pprof_http_brower_cpu](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/pprof_http_brower_cpu.png)
+![pprof_http_brower_cpu](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/pprof_http_brower_cpu.png)
 
 在菜单选择 VIEW - Flame Graph 可以输出火焰图，很直观地展示出各个函数调用以及占用CPU时间的多少。
 
-![pprof_http_brower_flame_graph](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/pprof_http_brower_flame_graph.png)
+![pprof_http_brower_flame_graph](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/pprof_http_brower_flame_graph.png)
 
 上述导出的是CPU分析的文件，根据请求不同可以导出不同类型的分析文件：
 
@@ -716,11 +716,11 @@ go tool pprof -http=:8081 goroutine
 
 调用图可以看到几乎所有 goroutine 都走向了 runtime.gopark，也就是 goroutine 被大量暂停了。
 
-![pprof_goroutine_leak_ui](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/pprof_goroutine_leak_ui.png)
+![pprof_goroutine_leak_ui](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/pprof_goroutine_leak_ui.png)
 
 通过火焰图，同样是几乎所有 goroutine 都在 runtime.gopark。
 
-![pprof_goroutine_leak_flame_graph](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/pprof_goroutine_leak_flame_graph.png)
+![pprof_goroutine_leak_flame_graph](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/pprof_goroutine_leak_flame_graph.png)
 
 调整代码，对通道进行读取：
 

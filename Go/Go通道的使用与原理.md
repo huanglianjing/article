@@ -158,7 +158,7 @@ type hchan struct {
 
 可以看到 go 使用一个环形队列来实现通道，通过两个下标来标记读写在环形队列中的位置，以充分利用内存。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_channel_struct.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_channel_struct.png)
 
 等待读取和写入的协程队列结构体为 waitq，它是一个双向链表，由指向链表首个元素和最后一个元素的指针组成，而这里元素结构体 sudog 代表着在等待队列中的一个 goroutine。实际上的一个 G 可以出现在许多等待队列上，因此有可能不同的 sudog 实际是同一个 G。
 

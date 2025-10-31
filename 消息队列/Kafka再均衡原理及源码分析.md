@@ -6,7 +6,7 @@
 
 一个Kafka集群的体系架构如下图所示，Kafka集群由一至多个broker组成，它们通过ZooKeeper来管理元数据，生产者将消息发送到Kafka集群，而消费者又从Kafka集群中拉取消息。
 
-![kafka_architecture](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_architecture.png)
+![kafka_architecture](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_architecture.png)
 
 在Kafka中，消息被发到特定的主题，而一个主题又可以配置为多个分区，因此发往这个主题的消息就会被分配到多个分区上了。
 
@@ -14,7 +14,7 @@
 
 如下图所示，一个主题分成4个分区P0、P1、P2、P3，有两个消费组A和B，它们分别给自己的消费组分配对应的分区，不同的消费者分别对应负责不同的分区。消费组A的四个消费者正好分别分配到一个分区，四个消费者各自拉取分配给自己的分区进行消息消费，而消费组B的两个消费者则分别分配了两个分区。
 
-![kafka_2_consumer_group](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_2_consumer_group.png)
+![kafka_2_consumer_group](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_2_consumer_group.png)
 
 看起来一切都很稳定，消费组里每个消费者各司其职，都有它们负责的分区。可是实际上分区的分配往往会发生变化，主题的分区数增加，以及消费组的消费者数量增加减少，都会对现有的分区分配造成影响。这时候，就需要重新给消费组的消费者们分配分区，这个过程就叫做消费组的分区再均衡（Rebalance）。
 
@@ -40,7 +40,7 @@ Kafka最早的解决方案是通过ZooKeeper的watcher实现的。
 
 每个消费组在ZooKeeper下维护了路径/consumers/[group_id]/ids，消费组的每个消费者在创建的时候，在这个ZooKeeper路径下用临时节点记录自己的消费者id属于此消费组。每个消费者分别在/consumers/[group_id]/ids和/brokers/ids路径上注册一个watcher，以分别监听消费组的消费者变化和broker增减变化。当/consumers/[group_id]/ids路径的子节点发生变化时，表示消费组中的消费者出现了变化，当/brokers/ids路径的子节点发生变化时，表示broker出现了增减。
 
-![kafka_rebalance_plan1](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_rebalance_plan1.png)
+![kafka_rebalance_plan1](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_rebalance_plan1.png)
 
 每个消费者通过watcher监控消费组和Kafka集群的状态，这种方案严重依赖于ZooKeeper，会有两个比较严重的问题：
 
@@ -53,7 +53,7 @@ Kafka最早的解决方案是通过ZooKeeper的watcher实现的。
 
 消费者不再依赖ZooKeeper，而只有GroupCoordinator会在ZooKeeper上添加watcher。消费者在加入或退出消费组时会修改ZooKeeper的元数据，触发GroupCoordinator的watcher，通知GroupCoordinator就开始再均衡操作。
 
-![kafka_rebalance_plan2](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_rebalance_plan2.png)
+![kafka_rebalance_plan2](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_rebalance_plan2.png)
 
 此方案中，分区的分配操作是在服务端的GroupCoordinator中完成的。
 
@@ -85,7 +85,7 @@ Kafka最早的解决方案是通过ZooKeeper的watcher实现的。
 
 如下图为例，消费者向随机一个broker 1发送GroupCoordinatorRequest请求，broker 1返回GroupCoordinatorResponse，消息中包含了broker 3，也就是说该节点包含了消费组属于的GroupCoordinator。
 
-![kafka_rebalance_consumer_step1](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_rebalance_consumer_step1.png)
+![kafka_rebalance_consumer_step1](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_rebalance_consumer_step1.png)
 
 发送GroupCoordinatorRequest请求的入口是ConsumerCoordinator的GroupCoordinatorRequest()方法。代码如下：
 
@@ -187,7 +187,7 @@ GroupCoordinator会对消费组随机选出一个leader，并且根据每个消�
 
 如下图，首先消费者会分别向GroupCoordinator发送JoinGroupRequest请求。
 
-![kafka_rebalance_consumer_step2_request](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_rebalance_consumer_step2_request.png)
+![kafka_rebalance_consumer_step2_request](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_rebalance_consumer_step2_request.png)
 
 发送JoinGroupRequest请求的入口是ConsumerCoordinator的joinGroupIfNeeded()方法。代码如下：
 
@@ -265,7 +265,7 @@ boolean joinGroupIfNeeded(final Timer timer) {
 
 接着，GroupCoordinator向各个消费者返回JoinGroupResponse。其中对选出的一个leader消费者返回的members包含有效数据，即各个成员的信息，对其他普通消费者返回的members为空。
 
-![kafka_rebalance_consumer_step2_response](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_rebalance_consumer_step2_response.png)
+![kafka_rebalance_consumer_step2_response](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_rebalance_consumer_step2_response.png)
 
 处理JoinGroupResponse的入口是JoinGroupResponseHandler的handle()方法。代码如下：
 
@@ -424,7 +424,7 @@ private RequestFuture<ByteBuffer> onJoinFollower() {
 
 在第二阶段中，GroupCoordinator向C0消费者返回的信息中isLeader=true，因此C0是消费组中的leader消费者。各个消费者向GroupCoordinator发送SyncGroupRequest请求，其中leader消费者的请求携带分区分配方案，以通知其他消费者，而其他消费者的请求是为了获得分区分配结果。
 
-![kafka_rebalance_consumer_step3_request](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_rebalance_consumer_step3_request.png)
+![kafka_rebalance_consumer_step3_request](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_rebalance_consumer_step3_request.png)
 
 发送SyncGroupRequest请求的入口是ConsumerCoordinator的sendSyncGroupRequest()方法。代码如下：
 
@@ -528,7 +528,7 @@ GroupCoordinator主要有以下几个作用：
 
 GroupCoordinator为每个消费组维护了一个状态机，消费组的状态只能在这四个状态之间转换。
 
-![kafka_rebalance_group_state_machine](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_rebalance_group_state_machine.png)
+![kafka_rebalance_group_state_machine](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_rebalance_group_state_machine.png)
 
 | 状态               | 含义                                                         |
 | ------------------ | ------------------------------------------------------------ |
@@ -583,7 +583,7 @@ Kafka服务端是由scala编写的，具体的处理函数入口在KafkaApis.han
 
 消费者C1：t0p2、t0p3、t1p2、t1p3
 
-![kafka_rebalance_strategy_range_1](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_rebalance_strategy_range_1.png)
+![kafka_rebalance_strategy_range_1](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_rebalance_strategy_range_1.png)
 
 这个分配策略将消费组下的各个主题分隔开来考虑，有可能对于每个主题的分配有少许不均，多个主题的分配结果不均会叠加起来。例如上面的例子，当每个主题都有3个分区时，分配结果如下，会出现分配不均：
 
@@ -591,7 +591,7 @@ Kafka服务端是由scala编写的，具体的处理函数入口在KafkaApis.han
 
 消费者C1：t0p2、t1p2
 
-![kafka_rebalance_strategy_range_2](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_rebalance_strategy_range_2.png)
+![kafka_rebalance_strategy_range_2](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_rebalance_strategy_range_2.png)
 
 分区分配入口函数是RangeAssignor的assign()方法。代码如下：
 
@@ -641,7 +641,7 @@ public Map<String, List<TopicPartition>> assign(Map<String, Integer> partitionsP
 
 消费者C1：t0p1、t1p0、t1p2
 
-![kafka_rebalance_strategy_round_robin_1](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_rebalance_strategy_round_robin_1.png)
+![kafka_rebalance_strategy_round_robin_1](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_rebalance_strategy_round_robin_1.png)
 
 但是当消费组内各消费者订阅的信息不同时，还有可能导致分区分配不均。
 
@@ -653,7 +653,7 @@ public Map<String, List<TopicPartition>> assign(Map<String, Integer> partitionsP
 
 消费者C2：t1p1、t2p0、t2p1、t2p2
 
-![kafka_rebalance_strategy_round_robin_2](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_rebalance_strategy_round_robin_2.png)
+![kafka_rebalance_strategy_round_robin_2](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_rebalance_strategy_round_robin_2.png)
 
 这个分配并不是最优解，因为完全可以将t1p2分配给消费者C1。
 

@@ -8,7 +8,7 @@ snowflake 是 Go 语言中雪花算法（snowflake）的实现。雪花算法是
 
 一个 snowflake id 有 64 bit，包含 1 bit 符号位（始终是 0）、41 bit 毫秒时间戳（最长可以记录 69 年）、10 bit 机器 id（最多 1024 台机器）、12 bit 序列号（最多每毫秒 4096 个序列号）。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_snowflake.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_snowflake.jpg)
 
 雪花算法生成的 ID 能满足在高并发分布式环境系统环境下的 ID 不重复，且不依赖第三方库和中间件，生成效率很快。基于时间戳能保证基本有序递增，因此也可以按时间排序。可以根据自己的实际需求和业务场景，调整各部分的位数。
 

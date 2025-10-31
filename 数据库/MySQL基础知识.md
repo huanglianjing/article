@@ -1,6 +1,6 @@
 # 1. 简介
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mysql_logo.webp)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_logo.webp)
 
 MySQL 是一款开源的关系型数据库管理系统（RDBMS），以高性能、可靠性、易用性和低成本著称。
 
@@ -21,7 +21,7 @@ MySQL 属于客户端/服务器架构（C/S 架构），客户端向服务器发
 
 MySQL 服务器的基本架构主要分为 Server 层和存储引擎两部份。Server 层包括连接器、查询缓存、优化器、执行器等，涵盖核心服务功能如存储过程、触发器、视图、内置函数。存储引擎层负责数据的存储和提取，支持 InnoDB、MyISAM、MEMORY 等，默认存储引擎是 InnoDB。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mysql_architecture.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_architecture.jpg)
 
 查询缓存很容易失效且命中率不高，不建议使用，在 MySQL 8.0 中已经删掉这块功能。
 
@@ -58,7 +58,7 @@ InnoDB 完全支持 ACID 事务，包括回滚、崩溃恢复等，采用行级�
 
 InnoDB 的架构设计包含内存架构（In-Memory Structures）和磁盘架构（On-Disk Structures）两大块。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mysql_innodb_architecture.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_innodb_architecture.png)
 
 ### 3.1.1 Buffer Pool
 
@@ -80,7 +80,7 @@ Buffer Pool 使用 LRU（最近最少使用）算法的变种作为缓存淘汰�
 
 LRU 列表分为两个子列表，其中 5/8 的部份保存最近频繁访问的数据页，另外 3/8 部份保存访问频率较低的数据页。当 InnoDB 将数据页写入 Buffer Pool 时，如果是 SQL 发起的操作，将它插入新列表的头部，如果是 InnoDB 发起的预读操作，将它插入旧列表的头部。两个子列表中的页面随着数据插入逐渐向后移，并在移到旧列表尾部后被淘汰掉。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mysql_innodb_buffer_pool_list.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_innodb_buffer_pool_list.png)
 
 **配置大小**
 
@@ -97,7 +97,7 @@ Change Buffer 是 Buffer Pool 的一部份，用于缓存当二级索引页不�
 
 对于插入、删除、更新操作产生的缓冲更改，若目标页不在 Buffer Pool，将变更记录写入 Change Buffer 生成 Redo Log 以保证持久化，后续读取该索引页时，将 Change Buffer 中的变更合并到 Buffer Pool，触发异步刷盘。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mysql_innodb_change_buffer.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_innodb_change_buffer.png)
 
 对二级索引的插入、删除、更新操作往往顺序较为随机，Change Buffer 可以避免从磁盘读取二级索引页至 Buffer Pool 产生的大量随机访问 I/O。
 
@@ -135,7 +135,7 @@ File-Per-Table Tablespace（独立表空间）是默认的表空间类型，一�
 
 表空间分为多个 segment（段），有管理叶子节点的段和非叶子节点的段。segment 中包含了 extent（区），每个区是一组连续的 page（页），默认有 64 个页，大小为 1MB。每个 page（页）包含了多个 row（行），大小为 16KB。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mysql_innodb_tablespace_segment.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_innodb_tablespace_segment.jpg)
 
 **General Tablespace**
 
@@ -299,7 +299,7 @@ MySQL 主备同步（Master-Slave Replication）通过将主库（Master）的�
 
 备库和主库之间维持了一个长连接，备库通过 change master 命令设置主库的地址、用户名密码、binlog 偏移量，然后执行 start slave 命令，启动 io_thread 线程与主库建立连接，将获取的 binlog 写到 relay log（中转日志），启动 sql_thread 线程读取 relay log 并解析命令和执行。主库内部有一个线程专用语服务备库的长连接，从指定位置读取 binlog 和发送给备库。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mysql_master_slave.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_master_slave.jpg)
 
 # 8. 参考
 

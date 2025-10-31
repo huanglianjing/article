@@ -60,17 +60,17 @@ update t set c = c+1 where ID = 2;
 * 执行器生成操作的 binlog，将 binlog 写入磁盘；
 * 执行器调用引擎的提交事务接口，引擎将写入的 redo log 改成 commit 状态，更新完成；
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mysql_2pc.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_2pc.jpg)
 
 ## 2.2 两阶段提交
 
 将 redo log 的写入拆分为 prepare 和 commit 两个步骤，就是两阶段提交（2PC, Two-Phase Commit）。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mysql_2pc_log.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_2pc_log.jpg)
 
 redo log 和 binlog 都可以拆分为 write 和 fsync 两个步骤，MySQL 对这个流程做了拆分优化，使得 redo log 和 binlog 在 fsync 时（下图 3、4 步），可以使用组提交（group commit）机制，降低磁盘 IOPS。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mysql_2pc_log_write_fsync.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_2pc_log_write_fsync.jpg)
 
 当做了错误的数据操作，希望让数据库恢复到之前某时刻的数据，只要有定期做整库备份且保存了近期以来的 binlog，就可以先从备份恢复数据库，在将备份时间到指定时间期间的 binlog 取出来重放，就可以恢复到指定时刻的数据状态了。两阶段提交是为了让 redo log 和 binlog 之间的逻辑一致。
 

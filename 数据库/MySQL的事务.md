@@ -76,7 +76,7 @@ SET [GLOBAL|SESSION] TRANSACTION ISOLATION LEVEL <level>;
 
 假设一个值从 1 被按顺序改成了 2、3、4，在回滚日志里面就会有类似下面的记录。在查询这条记录的时候，不同时刻启动的事务会有不同的 read-view，只需要执行不同的回滚操作就可以得出值，看到的值也就不同。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mysql_read_view.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_read_view.jpg)
 
 旧的回滚日志没有被任何 read-view 用到时，也就不需要再被用到，会被系统判断到并删除。因此，建议尽量不要使用长事务，因为这会在系统中保留很多很老的事务视图，占用大量的存储空间。
 
@@ -84,13 +84,13 @@ InnoDB 中会给每个事务分配一个唯一的事务 ID 即 transaction id，
 
 如下一行数据，存在 V1、V2、V3、V4 四个版本，每个版本记录了当前值和对应的 trx_id：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mysql_row_version.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_row_version.jpg)
 
 行的更新将会生成 undo log（回滚日志），上图中的 V1、V2、V3 不再存在于表中，而是保存在了 undo log 中，当需要得到这一行之前版本的值时，根据当前版本和 undo log 依次执行 U3、U2、U1 算出来。
 
 在可重复读的隔离级别中，一个事务启动后可以看到所有已提交的事务的结果，而看不见后面的其他事务的更新。InnoDB 为每个事务构造了一个数组，保存该事务启动瞬间，已启动未提交的活跃中的事务 ID。数组中事务 ID 最小值为低水位，系统已创建的最大事务 ID 加 1 为高水位，这个数组和高水位组成了当前事务的一致性视图（read-view）。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mysql_watermark.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_watermark.jpg)
 
 在当前事务的一致性视图中，对于一行数据的某个数据版本 row trx_id，可能有这几种情况：
 

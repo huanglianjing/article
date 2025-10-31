@@ -1,6 +1,6 @@
 # 1. 简介
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mongodb_logo.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mongodb_logo.jpg)
 
 MongoDB 是一款开源的文档数据库，具有灵活的数据模型、高性能和易扩展性，常用于处理非结构化或半结构化数据的应用开发，适合需要快速迭代、数据格式多样化、追求水平扩展的项目。
 
@@ -924,7 +924,7 @@ rs.initiate(rsconf)
 
 MongoDB 通过操作日志（oplog）在多台服务器进行数据同步，oplog 保存了主节点的每个写操作。每个从节点也都维护着自己的 oplog，也就可以被其他成员用作同步源。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mongodb_replica.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mongodb_replica.jpg)
 
 初始化同步时，会讲所有数据从副本集的一个成员复制到另一个成员，完成初始化同步后，会持续地从同步源复制 oplog，并在一个异步进程中应用操作。
 
@@ -936,7 +936,7 @@ MongoDB 分片机制允许创建一个由多个机器组成的集群，将集合
 
 需要在分片的前面运行一到多个路由进程 mongos，mongos 负责客户端请求的转发和合并，配置服务器（Config Server）负责存储集群分片的元数据。应用程序的请求到达 mongos 后，mongos 负责将请求转发到对应的分片，再收集响应合并后发送回应用程序。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/mongodb_shard.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mongodb_shard.jpg)
 
 首先需要对数据库启用分片：
 

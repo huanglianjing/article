@@ -8,7 +8,7 @@ Git 作为分布式的版本控制系统，支持对代码仓库的多人协作�
 
 如下图所示，代码仓库固定名称的分支有 master、release 和 test，分别对应正式环境、预发布环境、测试环境的代码分支。而 feature 与 hotfix 分支的具体名称，则应当在实际功能开发或者缺陷修复的时候，根据实际情况来命名。
 
-![git_branch_standard](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/version_control/git_branch_standard.png)
+![git_branch_standard](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/version_control/git_branch_standard.png)
 
 当我们需要开发某个功能的时候，基于 master 创建一个 feature 分支，然后在这个分支上提交代码，用于本地开发环境的测试。本地开发完成后，将 feature 分支合并至 test 分支，部署到测试环境，提供给测试人员测试。测试过程中发现的其他问题可以继续在 feature 分支提交并继续合并 test 分支。测试完成后，将 feature 分支合并至 release 分支，部署到预发布环境。预发布环境测试出现问题可以重复之前的提交代码以及合并分支的流程，没有问题则将 release 分支合并至 master 分支，并打上一个 tag，基于 tag 部署到正式环境。
 

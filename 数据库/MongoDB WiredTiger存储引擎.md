@@ -61,7 +61,7 @@ WiredTiger 默认会对集合使用块压缩，对索引使用前缀压缩，压
 
 WiredTiger 实现数据的二级缓存，第一层是操作系统层级的页面缓存，第二层则是存储引擎的内部缓存。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/wiredtiger_read_cache.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/wiredtiger_read_cache.jpg)
 
 在读取数据时：
 
@@ -82,7 +82,7 @@ WiredTiger 对数据的持久化分为两块：
 * CheckPouint 机制：建立 CheckPoint 时，会在内存建立所有数据的一致性快照，然后将快照覆盖的所有数据变化通过 fsync 持久化到数据文件，默认每 60s 建立一次 CheckPoint；
 * Journal 日志：通过预写日志（write ahead log）机制，将每个写操作的日志写入 Journal 缓冲区，该缓冲区会频繁将日志持久化到磁盘上，默认每 100ms 执行一次持久化；
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/wiredtiger_checkpoint_journal.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/wiredtiger_checkpoint_journal.jpg)
 
 当 MongoDB 发生宕机重启时，首先会恢复到上一个 CheckPoint，然后根据 Journal 日志恢复增量的变化。Journal 日志持久化时间间隔很短，极大减少了数据丢失的情况。
 
@@ -90,7 +90,7 @@ WiredTiger 对数据的持久化分为两块：
 
 WiredTiger 使用页（Page）作为数据存取的单元，页块在内存中的结构类似 B+树，区别在于叶子节点还拥有父级指针，以实现范围遍历操作。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/wiredtiger_tree.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/wiredtiger_tree.jpg)
 
 读取数据时，先通过 B+树索引找到对应的叶子节点，然后在页内使用二分查找来查找记录。
 

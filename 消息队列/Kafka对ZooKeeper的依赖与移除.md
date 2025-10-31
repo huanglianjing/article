@@ -14,7 +14,7 @@ Kafka自2.8开始，移除了之前用于集群的元数据管理、控制器选
 
 Kafka体系架构包含若干Producer、若干Broker、若干Consumer，以及一个ZooKeeper集群。Kafka通过ZooKeeper管理集群broker和消费者的元数据，以及用于进行控制器选举。
 
-![kafka_architecture](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_architecture.png)
+![kafka_architecture](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_architecture.png)
 
 
 
@@ -82,7 +82,7 @@ ZooKeeper同时还记录了消费者对指定消息分区进行消息消费的�
 
 ## 5.1 体系架构对比
 
-![kafka_without_zookeeper](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_without_zookeeper.png)
+![kafka_without_zookeeper](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_without_zookeeper.png)
 
 左图所示为目前的结构，有着3个ZooKeeper节点和4个Kafka broker节点，其中橙色的为broker节点中的控制器，控制器会向其他broker节点推送消息。
 
@@ -96,7 +96,7 @@ ZooKeeper同时还记录了消费者对指定消息分区进行消息消费的�
 
 元数据的更新也从通过向ZooKeeper注册监听的方式修改为普通节点主动从活动控制器拉取的方式。
 
-![kafka_quorum_controller](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_quorum_controller.png)
+![kafka_quorum_controller](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_quorum_controller.png)
 
 ## 5.3 启动方式
 
@@ -192,7 +192,7 @@ quorum控制器的引入极大降低了多分区情形下关闭与重启的耗�
 
 以下为Kafka在新旧的架构中拥有200万分区时关闭和启动恢复的速度，可以看出在新的架构下时间是大大缩短的。
 
-![kafka_shutdown_2m_partitions_time](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_shutdown_2m_partitions_time.png)
+![kafka_shutdown_2m_partitions_time](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_shutdown_2m_partitions_time.png)
 
 
 

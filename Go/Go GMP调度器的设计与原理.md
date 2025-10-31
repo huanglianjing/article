@@ -20,7 +20,7 @@ Go 使用 GMP调度器对协程进行调度，将它们分配至 CPU 上去执�
 
 **P** 指的是 processor，表示一个虚拟的处理器，可以把它看作在线程上运行的本地调度器，它代表 M 运行 G 所需要的资源，这里并不指代 CPU。P 的数量默认值等于 CPU 的核心数，但可以通过环境变量 GOMAXPROCS 修改。每个 G 要想真正运行起来，首先需要被分配一个 P，然后这个 P 还需要绑定到一个 M 上。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_gmp_g_m_p.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_gmp_g_m_p.png)
 
 GMP调度器就是运行时在用户态提供的多个函数组成的一种机制，目的是高效地调度 G 到 M 上去执行。
 
@@ -34,7 +34,7 @@ GMP调度器就是运行时在用户态提供的多个函数组成的一种机�
 2. 在一个线程执行系统调用，如发生网络请求或文件读写时，不占用 CPU，需要及时让出 CPU 给其他线程执行，会发生线程间的切换
 3. 线程在 CPU 上进行切换时，需要保持当前线程的上下文，将待执行的线程上下文恢复到寄存器，需要向操作系统内核申请资源，以及发生内核态和用户态的切换
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_history_thread.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_history_thread.jpg)
 
 ## 2.2 GM模型
 
@@ -44,13 +44,13 @@ GMP调度器就是运行时在用户态提供的多个函数组成的一种机�
 
 **G** 是轻量级用户态的协程，代表了一段需要被执行的代码的封装，每个 G 都有自己独立的栈存放程序的运行状态，初始分配内存大小仅为 2KB，并且可以按需扩缩容，最大可以去到 1GB。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_history_gm.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_history_gm.jpg)
 
 在早期的调度器，一个 Go 程序只有一个 M 线程。在将传统线程拆分为 M 和 G 之后，为了充分利用轻量级协程 G 的低内存占用和低切换开销的优点，会在当前的 M 上绑定多个 G，当前运行中的 G 执行完成后，调度器就将当前 G 切换，并将其他可以运行的 G 放入 M 去执行。用户创建的协程和系统线程是 N:1 的关系。
 
 这个方案的优点是用户态的 G 可以快速低成本地切换，不会陷入内核态。缺点是无法充分利用多核 CPU 的硬件能力，且 G 阻塞会导致与其绑定的 M 阻塞，其它 G 也无法执行。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_history_gm_one_thread.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_history_gm_one_thread.jpg)
 
 为了解决这些不足，Go 后来发展成了多线程调度器。
 
@@ -61,7 +61,7 @@ GMP调度器就是运行时在用户态提供的多个函数组成的一种机�
 3. 每个 M 都需要处理内存缓存，导致大量内存占用，并影响数据局部性
 4. 系统调用频繁阻塞和解除阻塞线程，增加了额外开销
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_history_gm_multi_thread.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_history_gm_multi_thread.jpg)
 
 
 
@@ -77,7 +77,7 @@ GMP调度器就是运行时在用户态提供的多个函数组成的一种机�
 
 之所以不直接将 P 的本地队列放到 M 上，而是要放到 P 上，是为了在某个线程 M 阻塞时，可以将和它绑定的 P 上的 G 转移到其它线程 M 去执行。如果 G 时直接绑定到 M 上的，那么当 M 阻塞时，它拥有的 G 就无法转移到其它 M 去执行了。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_architecture.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_architecture.jpg)
 
 GMP模型有以下几点核心思想：
 
@@ -90,7 +90,7 @@ GMP模型有以下几点核心思想：
 
 下面我们来看下，一次 go func() 语句创建一个协程并执行，所经历的调度流程。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_go_func.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_go_func.jpg)
 
 1. 通过 go func() 创建了一个 G
 2. 新建的 G 会先尝试保存到一个 P 的本地队列，如果已经满了则放入全局队列中
@@ -108,7 +108,7 @@ GMP模型有以下几点核心思想：
 
 正在 M1 上运行的 P，有一个 G1。通过 go func() 创建 G2 后，为了局部性，G2 会被优先放入 P 的本地队列。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_scenario_1.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_scenario_1.jpg)
 
 ## 3.2 G运行完成
 
@@ -116,7 +116,7 @@ M1 上的 G1 运行完成后（调用 goexit() 函数），M1 上运行的 G 会
 
 G0 负责调度协调的切换（运行 schedule() 函数），是程序启动时，线程 M（也叫 M0）的系统栈表示的 G 结构体，负责 M 上 G 的调度。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_scenario_2.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_scenario_2.jpg)
 
 ## 3.3 G个数大于本地队列长度
 
@@ -124,7 +124,7 @@ P 的本地队列最多能存 256 个 G，这里以最多能存 4 个为例说�
 
 正在 M1 上运行的 G2 要通过 go func() 创建 6 个 G。在前 4 个 G 放入 P 的本地队列中后，由于本地队列已满，创建第 5 个 G（G7）时，会将 P 的本地队列中前一半和 G7 一起打乱顺序放入全局队列中，P 的本地队列剩下的 G 则往前移动。然后创建第 6 个 G（G8），这时 P 的本地队列还未满，将 G8 放入本地队列中。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_scenario_3.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_scenario_3.jpg)
 
 ## 3.4 M的自旋状态
 
@@ -136,13 +136,13 @@ P 的本地队列最多能存 256 个 G，这里以最多能存 4 个为例说�
 
 n = min(len(globrunqsize)/GOMAXPROCS + 1, len(localrunsize/2))
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_scenario_4.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_scenario_4.jpg)
 
 ## 3.5 任务窃取机制
 
 一个处于自旋状态的 M 会尝试先从全局队列寻找可运行的 G，如果全局队列为空，则会从其他 P 偷取一些 G 放到自己绑定的 P 的本地队列，数量是那个 P 运行队列的一半。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_scenario_5.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_scenario_5.jpg)
 
 ## 3.6 G发生阻塞
 
@@ -152,7 +152,7 @@ n = min(len(globrunqsize)/GOMAXPROCS + 1, len(localrunsize/2))
 
 需要说明，如果 G 是进入通道阻塞，则该 M 不会一起进入阻塞，因为通道数据传输涉及内存拷贝，不涉及系统资源的等待。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_scenario_6.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_scenario_6.jpg)
 
 ## 3.7 G解除阻塞
 
@@ -160,7 +160,7 @@ n = min(len(globrunqsize)/GOMAXPROCS + 1, len(localrunsize/2))
 
 如果找不到一个 P 进行绑定，则将解除阻塞的 G2 放入全局队列，等待其他的 P 获取和调度执行，然后将 M1 放回休眠线程队列中。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_scenario_7.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_scenario_7.jpg)
 
 
 
@@ -253,7 +253,7 @@ const (
 
 G 从创建到结束的生命周期经历的状态变化如下图。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_g_status.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_g_status.jpg)
 
 ### 4.1.2 M
 
@@ -336,7 +336,7 @@ status 字段的主要状态有：
 
 P 的各种状态转化关系如图：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_p_status.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_p_status.jpg)
 
 全局队列的数据结构为 schedt，以及一些全局变量。
 
@@ -442,7 +442,7 @@ GLOBL	runtime·mainPC(SB),RODATA,$8
 
 Go 程序启动后的调度器主逻辑如下图所示：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_rt0_go.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_rt0_go.jpg)
 
 ## 4.3 调度器初始化
 
@@ -708,7 +708,7 @@ mstart1() 函数最后会调用 schedule() 函数，开始调度循环。
 
 以下是 schedule() 函数的执行流程示意图。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gmp_schedule.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gmp_schedule.png)
 
 ```go
 // src/runtime/proc.go

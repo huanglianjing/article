@@ -4,7 +4,7 @@
 
 分布式中很重要的一个概念就是事务，事务提供一种机制将一个活动涉及的所有操作纳入到一个不可分割的执行单元，组成事务的所有操作只有在所有操作均能正常执行的情况下方能提交，只要其中任一操作执行失败，都将导致整个事务的回滚。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/distribute/distribute_theory_transaction.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/distribute/distribute_theory_transaction.jpg)
 
 事务基于数据进行操作，数据库事务支持 ACID 特性，它们分别为原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）、持久性（Durability）。
 
@@ -21,11 +21,11 @@
 
 CAP 理论指在一给分布式计算机系统中，一致性、可用性和分区容错性这三者无法同时得到满足，最多只能同时满足两个。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/distribute/distribute_theory_cap.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/distribute/distribute_theory_cap.jpg)
 
 下面通过一个场景来分析 CAP 中的每个特性。客户端发送请求，业务层处理请求，完成业务逻辑处理后存储数据，存储层内部分为主存储和从存储且存在数据同步，业务层从存储层去除数据，然后返回给客户端。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/distribute/distribute_theory_cap_case.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/distribute/distribute_theory_cap_case.png)
 
 ## 2.1 一致性
 
@@ -41,13 +41,13 @@ CAP 理论指在一给分布式计算机系统中，一致性、可用性和分�
 
 一致性的目标是将数据写入主存储，然后从从存储读取也成功，如果写入失败则从从存储读取也失败。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/distribute/distribute_theory_cap_c_1.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/distribute/distribute_theory_cap_c_1.png)
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/distribute/distribute_theory_cap_c_2.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/distribute/distribute_theory_cap_c_2.png)
 
 为了实现一致性，在写入主存储后，需要锁定数据库以向从存储同步数据，待同步完成后再释放锁，避免写入新数据后读取到旧的数据。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/distribute/distribute_theory_cap_c_3.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/distribute/distribute_theory_cap_c_3.png)
 
 ## 2.2 可用性
 
@@ -65,11 +65,11 @@ CAP 理论指在一给分布式计算机系统中，一致性、可用性和分�
 
 可用性的目标是，当主存储被更新是，如果从存储收到数据查询请求，应当立即能够响应数据查询结果，不允许出现响应超时或响应错误。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/distribute/distribute_theory_cap_a_1.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/distribute/distribute_theory_cap_a_1.png)
 
 为了实现可用性，不可以将从存储中的资源锁定，即使数据还没有完成同步，从存储也要返回查询的数据而非返货错误或超时，即使它是旧数据。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/distribute/distribute_theory_cap_a_2.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/distribute/distribute_theory_cap_a_2.png)
 
 ## 2.3 分区容错性
 
@@ -77,13 +77,13 @@ CAP 理论指在一给分布式计算机系统中，一致性、可用性和分�
 
 分区容错性的目标是主存储向从存储同步数据失败时，不影响读写操作，其中部分节点出现故障不影响其他节点对外提供服务。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/distribute/distribute_theory_cap_p_1.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/distribute/distribute_theory_cap_p_1.png)
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/distribute/distribute_theory_cap_p_2.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/distribute/distribute_theory_cap_p_2.png)
 
 为了实现分区容错性，可以使用异步同步的方式，将数据从主存储同步到从存储，从而在节点之间实现松耦合。添加备份的从存储节点，在一个节点挂掉后让备份的节点提供服务。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/distribute/distribute_theory_cap_p_3.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/distribute/distribute_theory_cap_p_3.png)
 
 ## 2.4 矛盾与取舍
 
@@ -91,17 +91,17 @@ CAP 理论指在一给分布式计算机系统中，一致性、可用性和分�
 
 以以下场景为例，一个分布式系统系统中有两个节点 Host1 和 Host2，它们之间通过网络联通，Host1 运行程序 Process1 和数据库 Data，Host2 运行程序 Process2 和数据库 Data。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/distribute/distribute_theory_cap_conflict_1.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/distribute/distribute_theory_cap_conflict_1.png)
 
 满足一致性要求 Host1 和 Host2 中的 Data 的数据相同，满足可用性要求不管用户请求 Host1 还是 Host2 都会立即响应结果，满足分区容错性要求 Host1 或者 Host2 任一方脱离系统都不会影响分布式系统的正常运作。
 
 以下是一个正常的运行流程。首先向 Host1 请求更新数据，将 Data 中的数据从 0 更新为 1。通过数据同步，Host1 中的 Data 将会同步到 Host2 中的 Data，使其更新为 1。然后向 Host2 请求读取数据，获取最新的数据为 1。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/distribute/distribute_theory_cap_conflict_2.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/distribute/distribute_theory_cap_conflict_2.png)
 
 假如这时候发生了网络异常，Host1 和 Host2 之间的网络断开了。首先向 Host1 请求更新数据，将 Data 中的数据从 0 更新为 1。由于网络问题，Host2 中的数据无法同步至最新。用户向 Host2 发送读取请求是，无法立即将最新的数据返回给用户。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/distribute/distribute_theory_cap_conflict_3.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/distribute/distribute_theory_cap_conflict_3.png)
 
 为了满足一致性，则需要阻塞等待，直到网络恢复连接然后数据同步完成，再将最新数据返回给用户，这牺牲了可用性。为了满足可用性，立即将当前的旧数据返回给用户，这又牺牲了一致性。因此这种情况下一致性和可用性无法同时得到满足。
 

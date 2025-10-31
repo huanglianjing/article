@@ -1,6 +1,6 @@
 # 1. 简介
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/prometheus_logo.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/prometheus_logo.png)
 
 Prometheus 是一个开源的服务监控系统和时序数据库，提供了通用的数据模型和快捷的数据采集、存储和查询接口。Prometheus 将指标收集并存储为时间序列数据，即将指标信息、可选的 KV 标签值和记录时的时间戳一起存储。通过指标的收集和查询，我们可以更好地了解系统的运行状态，帮助排查定位异常问题的具体原因。
 
@@ -40,7 +40,7 @@ Prometheus 的使用场景：
 
 Prometheus 的架构如下图所示。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/prometheus_architecture.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/prometheus_architecture.png)
 
 Prometheus Server（服务器）作为核心组件，负责实现对监控数据的获取，存储以及查询。通过服务发现或配置发现目标，以拉的方式从中间推送网关（Pushgateway）或仪表器任务中拉取指标，将所有数据通过 TSDB 数据库保存在本地磁盘，通过 PromQL 在自带的 web UI 界面或如 Grafana 等数据可视化平台上聚合和查询数据，使用 Alertmanager 基于指标计算发送各种方式的告警。
 
@@ -293,7 +293,7 @@ docker run -d -p 9100:9100 --name node-exporter prom/node-exporter
 
 在查询页面查询 up，可以看到 job 为 prometheus 和 node 各有一个，值都是 1，表示成功监听到了它们。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/prometheus_node_exporter_up.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/prometheus_node_exporter_up.png)
 
 node exporter 主要监控的指标有：
 
@@ -324,15 +324,17 @@ brew services start grafana
 
 在页面中选择添加 Data sources（数据源），选择 prometheus。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/grafana_add_data_source.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/grafana_add_data_source.png)
 
 然后添加 Dashboards（仪表板）。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/grafana_add_dashboard.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/grafana_add_dashboard.png)
 
 然后就可以在页面上测试 PromQL 以及展示效果了，并且可以添加多个 Row（行）表示分类，添加不同的 Visualization（可视化）表示不同的监控。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/grafana_test_promql.png)![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/grafana_my_dashboard.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/grafana_test_promql.png)
+
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/grafana_my_dashboard.png)
 
 ## 3.4 AlertManager
 

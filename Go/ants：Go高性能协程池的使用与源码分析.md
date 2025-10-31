@@ -338,7 +338,7 @@ func WithLogger(logger Logger) Option {}
 
 ants主要的结构体与函数调用流程图如下：
 
-![ants_flow_graph](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/ants_flow_graph.png)
+![ants_flow_graph](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/ants_flow_graph.png)
 
 ## 3.1 常量与默认协程池
 
@@ -580,23 +580,23 @@ func newWorkerLoopQueue(size int) *loopQueue {
 
 当创建完成后，开始状态如下，head 和 tail 指向同一个位置。
 
-![ants_loop_queue_1](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/ants_loop_queue_1.png)
+![ants_loop_queue_1](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/ants_loop_queue_1.png)
 
 添加元素时，tail 指针往后移一位。取出元素时，head 指针往后移一位。
 
-![ants_loop_queue_2](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/ants_loop_queue_2.png)
+![ants_loop_queue_2](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/ants_loop_queue_2.png)
 
 head 指针或 tail 指针到切片尾部需要回绕回来，此时 head 下标大于 tail。
 
-![ants_loop_queue_3](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/ants_loop_queue_3.png)
+![ants_loop_queue_3](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/ants_loop_queue_3.png)
 
 当 tail 指针赶上 head 指针，则表示队列已经满了。
 
-![ants_loop_queue_4](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/ants_loop_queue_4.png)
+![ants_loop_queue_4](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/ants_loop_queue_4.png)
 
 而当 head 指针赶上 tail 指针时，则表示队列空了。这两种情况用 isFull 来区分。
 
-![ants_loop_queue_5](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/ants_loop_queue_5.png)
+![ants_loop_queue_5](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/ants_loop_queue_5.png)
 
 下面我们来看下源码的实现。
 
@@ -776,7 +776,7 @@ retry:
 
 流程图如下：
 
-![ants_submit_chart](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/ants_submit_chart.png)
+![ants_submit_chart](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/ants_submit_chart.png)
 
 ## 3.5 定期清理过期worker
 

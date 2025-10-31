@@ -75,7 +75,7 @@ ClickHouse 通过分区，将数据进行纵向切分，在物理上分隔成更
 
 如分区 ID 为 20250101，块编号（BlockNum）从 1 开始计数，新的分区层级（Level）为 0，则分区目录为 20250101_1_1_0。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/clickhouse_mergetree_partition_dir.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/clickhouse_mergetree_partition_dir.jpg)
 
 块编号在每次创建分区目录时累积加 1，分区层级在每次合并时加 1。
 
@@ -91,7 +91,7 @@ ClickHouse 通过后台任务将属于同分区的多个目录进行合并，生
 
 以下为数据写入、分区目录合并、删除非激活状态目录的过程：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/clickhouse_mergetree_partition_dir_merge.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/clickhouse_mergetree_partition_dir_merge.jpg)
 
 可以通过命令强制触发分区合并：
 
@@ -111,7 +111,7 @@ MergeTree 中数据按列存储，每个列都有一个对应的 .bin 数据文�
 
 .bin 文件包含多个压缩数据快，每个压缩数据块由头信息和压缩数据组成，而头信息固定使用 9 字节表示，1 字节记录压缩算法，4 字节记录压缩后的数据大小，4 字节记录压缩前的数据大小。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/clickhouse_mergetree_bin_file.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/clickhouse_mergetree_bin_file.jpg)
 
 每个压缩快的体积，按压缩前的数据大小，被控制在 64KB - 1MB 之间，数据写入的批次太小则将多批次合并为一个压缩数据块，批次太大则将其拆分为多个压缩数据块。
 

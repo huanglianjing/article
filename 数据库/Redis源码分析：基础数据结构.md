@@ -53,7 +53,7 @@ struct __attribute__ ((__packed__)) sdshdr64 {
 
 以下为 sdshdr8 的对象示例图，len=5 表示 buf 数组中已使用字符串的长度，alloc=20 表示实际申请的 buf 数组长度，flags=1 表示这是一个 sdshdr8 对象：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/redis_struct_sdshdr.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_struct_sdshdr.jpg)
 
 SDS 结构体设计的好处在于：
 
@@ -120,7 +120,7 @@ typedef struct dictEntry {
 
 以下为一个 dict 对象的例子。并未进行 rehash，所以数据全部在哈希表 ht[0] 中，哈希表大小为 4，其中存在 3 个节点，由于其中两个节点存在哈希值冲突，所以用链表连接起来。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/redis_struct_dict.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_struct_dict.jpg)
 
 ## 3.1 哈希算法
 
@@ -175,7 +175,7 @@ typedef struct listNode {
 
 以下为一个 list 对象的例子：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/redis_struct_list.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_struct_list.jpg)
 
 # 5. 跳跃表
 
@@ -213,7 +213,7 @@ typedef struct zskiplistNode {
 
 以下为一个跳跃表的例子：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/redis_struct_skiplist.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_struct_skiplist.jpg)
 
 # 6. 参考
 

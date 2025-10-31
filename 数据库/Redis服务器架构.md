@@ -65,5 +65,5 @@ Redis 集群本身具有故障自动重定向和故障转移的高可用性，�
 
 通过引入 proxy 提高系统整体性能，同时隐藏了后端 Redis 节点的复杂性，代价是增加了系统的组件复杂度和需要维护额外的代理服务器。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/redis_deploy.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_deploy.jpg)
 

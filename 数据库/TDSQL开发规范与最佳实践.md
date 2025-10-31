@@ -8,7 +8,7 @@ TDSQL（Tencent Distributed SQL）是腾讯打造的一款企业级数据库产�
 
 根据腾讯云官方文档的介绍，TDSQL 单分片最大支持 6TB 存储，最大支持 24 万 QPS，实例性能可以随分片数量增加线性扩展。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/tdsql_shard_table.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/tdsql_shard_table.png)
 
 实例根据是否分片，分为集中式实例（no_shard），所有数据都在一个 set 上，和分布式实例（group_shard、shard），数据分布在 n 个 set 上。
 
@@ -242,5 +242,5 @@ DML 语句：
 # 4. 参考
 
 * [TDSQL MySQL版简介](https://cloud.tencent.com/document/product/557)
-* [TDSQL开发规范](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/TDSQL%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83.pdf)
+* [TDSQL开发规范](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/TDSQL%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83.pdf)
 

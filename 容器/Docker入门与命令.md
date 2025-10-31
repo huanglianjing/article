@@ -1,6 +1,6 @@
 # 1. 简介
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/container/docker_logo.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/container/docker_logo.png)
 
 Docker 由 Docker 公司开发，是一个能把应用程序自动部署到容器的开源引擎。
 
@@ -26,13 +26,13 @@ Docker 是客户端/服务器（C/S）架构的程序，客户端只需向服务
 
 Docker 结构如下图所示，客户端连接到守护进程，守护进程会访问在本地的镜像以及仓库中的镜像，并且创建和管理容器。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/container/docker_architecture.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/container/docker_architecture.jpg)
 
 ## 1.2 镜像
 
 Docker 镜像是由文件系统叠加而成的。镜像的最底端是一个引导文件系统 bootfs，往上一层是容器中的基础镜像，是某种操作系统如 Ubuntu 或 Debian 等，而上面还会有 0 到多层的镜像，每一层表示基于镜像的修改再次提交的改动叠加，最上面一层则是容器，是从镜像启动创建容器后的空间。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/container/docker_filesystem.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/container/docker_filesystem.jpg)
 
 Docker 使用联合加载（union mount）技术，对于从内核到基础镜像到多层镜像的文件系统叠加到一起，最终封装为包含所有底层的文件和目录的镜像文件。除了容器这一层可以读写，下面的其他层都是只读的。
 

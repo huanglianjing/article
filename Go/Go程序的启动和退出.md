@@ -38,7 +38,7 @@ go env GOPATH
 
 在编译 Go 程序时，编译器从 main 包开始，找到 import 语句并依次导入对应的包，如果这些包本身又有导入的包，则会递归地继续导入它所 import 的包。这其中重复的包只会导入一次。导入顺序如下示意图：
 
-![go_import_order](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_import_order.png)
+![go_import_order](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_import_order.png)
 
 导入一个包将会完成以下事情：完成导入当前包所 import 的其它包、初始化常量、初始化变量、调用包的 init 函数。而执行 main 函数则会完成以下事情：完成导入 main 包所 import 的包、初始化常量、初始化变量、调用 main 包的 init 函数，调用 main 函数。
 

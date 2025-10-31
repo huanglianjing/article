@@ -6,7 +6,7 @@ CSS全称层叠样式表（Cascading Style Sheets），用于描述HTML文档样
 
 CSS规则集由选择器和声明块组成，选择器指向需要设置样式的HTML元素，声明块包含若干条用分号分割的声明，每条声明由一个CSS属性和一个值组成。
 
-![css_format](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/web/css_format.gif)
+![css_format](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/web/css_format.gif)
 
 以上图片例子对应如下代码：
 
@@ -350,7 +350,7 @@ CSS框模型的各种属性如下图：
 
 黑色实线处为边框，分为外边距和内边距，中间是实际元素的高度和宽度。
 
-![css_border_model](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/web/css_border_model.gif)
+![css_border_model](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/web/css_border_model.gif)
 
 **margin-top**
 **margin-right**

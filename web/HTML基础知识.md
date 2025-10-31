@@ -31,7 +31,7 @@ HTML是用来描述网页的一种语言，全称超文本标记语言(Hyper Tex
 
 保存为HTML文件，在浏览器打开后，页面效果如下：
 
-![html_example](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/web/html_example.png)
+![html_example](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/web/html_example.png)
 
 此外，还可以在HTML的首部里增加一些样式，就是style标签。style标签有一个可选的属性type，一般指定为"text/css"。
 
@@ -66,7 +66,7 @@ style标签中的body表示这段配置应用于主体中的body标签。
 
 保存刷新后看到页面效果：
 
-![html_example_1](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/web/html_example_1.png)
+![html_example_1](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/web/html_example_1.png)
 
 可以看到通过增加style标签，给页面加了背景颜色、边框、字体。
 
@@ -515,7 +515,7 @@ iframe元素用于在网页内显示网页。
 
 在网页中显示如下：
 
-![html_form](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/web/html_form.png)
+![html_form](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/web/html_form.png)
 
 点击提交按钮，会讲上面文本框和单选按钮输入的key=value对，传给网页参数发送请求，例如会发送一个请求`a.html?input+1=val1&input+2=val2&sex=male`。
 
@@ -539,7 +539,7 @@ HTML5提供的语义元素能清楚地描述意义，明确表示网页的不同
 
 HTML5语义元素对应的网页结构：
 
-![html5_semantic_element](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/web/html5_semantic_element.png)
+![html5_semantic_element](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/web/html5_semantic_element.png)
 
 **header**
 

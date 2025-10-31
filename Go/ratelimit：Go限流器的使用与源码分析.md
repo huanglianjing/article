@@ -101,11 +101,11 @@ func WithSlack(slack int) Option
 
 而在实际使用中，流量经常是突发性的，是时间间隔不稳定的。例如第一次请求 15ms 后产生第二次请求，然后 5ms 后产生第三次请求，第三次请求就因为和第二次请求不足 10ms 而需要等待 5ms，三个请求需要消耗 25ms。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/ratelimit_without_slack.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/ratelimit_without_slack.png)
 
 ratelimit 对漏桶算法做了一些改良，引入了最大松弛量（maxSlack）的概念。对于以上的例子，因为从请求一到请求二多等了 5ms，可以把这 5ms 挪给请求三使用，因而请求三无需等待，直接处理。三个请求只需要消耗 20ms。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/ratelimit_with_slack.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/ratelimit_with_slack.png)
 
 但是如果两次请求之间时间间隔过久，比如高出平均时间间隔一两个数量级，那后面多个请求到来时，这个松弛量会被立刻消耗完，这里也就失去了限流的意义。为了防止这种情况，ratelimit 引入最大松弛量（maxSlack），表示允许抵消的最长时间。
 

@@ -2,7 +2,7 @@
 
 Redis 作为高性能的内存数据库，具有较高的读写速度和并发性能，常常被用作于系统的缓存。通过将频繁访问的热点数据保存在 Redis 中，可以减少底层的磁盘数据库的直接访问次数，从而以提升系统的整体性能、稳定性和吞吐量。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/redis_cache.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_cache.jpg)
 
 将 Redis 作为底层数据库的缓存，带来了以下的收益：
 
@@ -83,7 +83,7 @@ Cache-Aside Pattern（旁路缓存模式）中，读取缓存、读取数据库�
 
 如果缓存不存在，再去查询数据库，如果数据库也不存在则直接返回，否则更新缓存后返回。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/redis_cache_consistency_query.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_cache_consistency_query.jpg)
 
 ### 2.2.2 更新请求
 
@@ -99,7 +99,7 @@ Cache-Aside Pattern（旁路缓存模式）中，读取缓存、读取数据库�
 2. 这时候更新请求2到来，更新了缓存和数据库；
 3. 更新请求1接下来完成更新数据库，此时缓存是更新请求2设置的值，属于脏数据；
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/redis_cache_consistency_update_1.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_cache_consistency_update_1.jpg)
 
 **方法二、先更新数据库，再更新缓存**
 
@@ -111,7 +111,7 @@ Cache-Aside Pattern（旁路缓存模式）中，读取缓存、读取数据库�
 2. 这时候更新请求2到来，更新了数据库和缓存；
 3. 更新请求1接下来完成更新缓存，此时的缓存属于脏数据；
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/redis_cache_consistency_update_2.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_cache_consistency_update_2.jpg)
 
 **方法三：先删除缓存，再更新数据库**
 
@@ -121,7 +121,7 @@ Cache-Aside Pattern（旁路缓存模式）中，读取缓存、读取数据库�
 2. 这时候有一个查询请求，查询缓存未命中，于是查询数据库，然后将值更新至缓存；
 3. 更新请求接着更新数据库，此时缓存中的数据便成了脏数据；
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/redis_cache_consistency_update_3.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_cache_consistency_update_3.jpg)
 
 **方法四：先更新数据库，再删除缓存**
 
@@ -131,7 +131,7 @@ Cache-Aside Pattern（旁路缓存模式）中，读取缓存、读取数据库�
 2. 查询请求1在删除缓存前查询缓存命中，返回旧数据；
 3. 查询请求2在删除缓存后查询缓存未命中，查询数据库，然后将值更新至缓存，返回新数据；
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/redis_cache_consistency_update_4.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_cache_consistency_update_4.jpg)
 
 这种方案中，我们要保证成功删除缓存，因为如果删除缓存失败，缓存中就会保留旧数据，产生数据不一致。可以通过重试机制，定时重试或者将删除写入消息队列异步删除，以确保缓存的删除。
 
@@ -161,7 +161,7 @@ Cache-Aside Pattern（旁路缓存模式）中，读取缓存、读取数据库�
 
 当存储层不命中时，仍将空对象保留到缓存层，后面再次获取这个数据将直接在缓存中获取到。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/redis_cache_empty_key.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_cache_empty_key.jpg)
 
 这个方式也带来了一些问题：
 
@@ -174,7 +174,7 @@ Cache-Aside Pattern（旁路缓存模式）中，读取缓存、读取数据库�
 
 在访问缓存层之前添加一层布隆过滤器作为拦截，布隆过滤器加入了所有的 key 的集合，存储层新增的数据也要加入布隆过滤器中，如果在布隆过滤器中查不到则表示不存在该 key，可以直接返回空对象。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/redis_cache_bloomfilter.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_cache_bloomfilter.jpg)
 
 这种方式适用于数据命中率底、数据相对固定、实时性低的应用场景。
 

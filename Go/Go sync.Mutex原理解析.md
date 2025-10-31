@@ -61,7 +61,7 @@ state 字段有 32 位长度，可以分为四部分。最低的三位分别表�
 * mutexStarving：互斥锁是否处于饥饿模式
 * waiter：有多少协程在等待获取互斥锁
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/mutex_state.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/mutex_state.png)
 
 ```go
 const (
@@ -191,7 +191,7 @@ Lock 方法通过自旋锁机制，在某些情况下允许协程进行自旋等
 
 上锁的流程图如下：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/mutex_lock.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/mutex_lock.jpg)
 
 ## 2.3 TryLock
 
@@ -267,7 +267,7 @@ Unlock 方法释放锁，并通过信号量来唤醒阻塞获取锁的协程。�
 
 解锁的流程图如下：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/mutex_unlock.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/mutex_unlock.jpg)
 
 # 3. 参考
 

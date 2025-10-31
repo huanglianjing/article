@@ -1,6 +1,6 @@
 # 1. 介绍
 
-![kafka_logo](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_logo.jpg)
+![kafka_logo](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_logo.jpg)
 
 Kafka是LinkedIn采用Scala开发的一个多分区、多副本、基于ZooKeeper协调的分布式消息系统，已被捐献给Apache基金会。kkokokokKafka定位为一个分布式流式处理平台，包含高吞吐、可持久化、可水平扩展、支持流数据处理等特性。
 
@@ -20,7 +20,7 @@ Kafka有三大角色：
 
 ## 2.1 体系架构
 
-![kafka_architecture](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_architecture.png)
+![kafka_architecture](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_architecture.png)
 
 上图为Kafka的体系架构。一个Kafka体系架构包含若干Producer、若干Broker、若干Consumer，以及一个ZooKeeper集群。
 
@@ -59,7 +59,7 @@ Kafka的消息以主题进行归类，这是一个逻辑上的概念。生产者
 
 下图展示了在一个有4个broker的集群中，一个主题配置了3个分区P1、P2、P3。复制系数为3，即每个分区包含有3个副本，一个是leader副本两个是follower副本，这3个副本存储在不同的broker中。
 
-![kafka_partition_replica](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_partition_replica.png)
+![kafka_partition_replica](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_partition_replica.png)
 
 分区的所有副本统称为AR（Assigned Replicas），leader副本以及与leader副本保持一定程度同步的副本组成ISR（In-Sync Replicas），与leader副本同步滞后过多的副本组成OSR（Out-of-Sync Replicas），因此AR=ISR+OSR。leader副本维护和跟踪ISR集合与自己的滞后状态，滞后太多或失效的副本会被从ISR剔除，变为失效副本，OSR中的副本追上leader副本则会被转移至ISR。默认配置下，leader副本发生故障后只会在ISR集合中选举新leader。
 
@@ -75,7 +75,7 @@ Kafka的消息以主题进行归类，这是一个逻辑上的概念。生产者
 
 下图展示了一个日志文件，其中HW为6，LEO为9，因此消费者只能拉取偏移量0到5的消息，而下一条写入的消息偏移量将会是9。
 
-![kafka_offset](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_offset.png)
+![kafka_offset](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_offset.png)
 
 ## 2.4 生产者和消费者
 
@@ -107,7 +107,7 @@ Kafka自定义了一组基于TCP的二进制协议，只要遵守这组协议的
 
 #### 协议请求头
 
-![kafka_request_format](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_request_format.png)
+![kafka_request_format](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_request_format.png)
 
 协议请求头包含四个域（Field）：
 
@@ -120,7 +120,7 @@ Kafka自定义了一组基于TCP的二进制协议，只要遵守这组协议的
 
 #### 协议响应头
 
-![kafka_response_format](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_response_format.png)
+![kafka_response_format](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_response_format.png)
 
 协议响应头只有correlation_id，对应发送时的请求头中的correlation_id。
 
@@ -162,7 +162,7 @@ ZooKeeper中还有一个持久节点/controller_epoch，存放整型的controlle
 
 Kafka生产者客户端整体架构如下图所示：
 
-![kafka_producer](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_producer.png)
+![kafka_producer](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_producer.png)
 
 整个生产者客户端有两个线程协调运行，分别为主线程和Sender线程。
 
@@ -248,13 +248,13 @@ public void close();
 
 每个消费者都有一个对应的消费组，又称为消费者群组，消息发布到主题后，只会被投递给订阅了该主题的每个消费组中的一个消费者。多个消费组订阅了某个主题后，互相之间不影响，每个消费组自行决定如何分配包含的各个消费者能消费的分区，而每个消费者只能消费被消费组分配的分区。
 
-![kafka_2_consumer_group](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_2_consumer_group.png)
+![kafka_2_consumer_group](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_2_consumer_group.png)
 
 如上图所示，该主题有4个分区。有两个消费组对其进行消费，他们分别决定如何给自己的消费者分配分区。消费组A的四个消费者分别消费一个分区，而消费组B的两个消费者分别消费两个分区。
 
 当消费组的消费者数量为1时，该消费者消费主题所有的分区。当消费者数量小于分区数量时，分区被平均地分配给消费者，但是有时候无法完全平均，如10个分区分配给3个消费者，3个消费者会分别消费4、3、3个分区。当消费者数量等于分区数量时，正好每个消费者消费一个分区。当消费者数量大于分区数量时，由于每个分区只能由消费组的一个分区消费，因此多出的消费者将不会被分配分区，如下图所示。
 
-![kafka_consumer_more_than_partition](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_consumer_more_than_partition.png)
+![kafka_consumer_more_than_partition](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_consumer_more_than_partition.png)
 
 消费组可以通过增加或减少消费者个数来提高或降低整体的消费能力，具有横向伸缩性。但是超过分区数的消费者将没有意义。
 
@@ -385,7 +385,7 @@ Kafka的中的消息是以主题进行归类的，各个主题在逻辑上相互
 
 Log在物理上以文件夹的形式存储，而每个LogSegment对应于磁盘上的一个日志文件和两个索引文件，以及可能的其他文件如.deleted、.cleaned、.swap等。文件结构如下图所示：
 
-![kafka_log_structure](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_log_structure.png)
+![kafka_log_structure](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_log_structure.png)
 
 每个LogSegment的.log（日志文件）都对应两个索引文件：.index（偏移量索引文件）和.timeindex（时间戳索引文件），每个LogSegment都有一个基准偏移量baseOffset，表示当前LogSegment的第一条消息的偏移量，偏移量是一个64位长整形数，日志文件和两个索引文件都以基准偏移量命名，长度为20位数字，前面以0填充。
 
@@ -417,7 +417,7 @@ $ l
 
 日志格式指的是消息的格式，最新的v2版本格式如下：
 
-![kafka_log_format](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/message_queue/kafka_log_format.png)
+![kafka_log_format](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_log_format.png)
 
 #### 消息压缩
 

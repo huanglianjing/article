@@ -23,11 +23,11 @@ B+ 树索引的每一个节点都是一个数据页，一个数据页默认占�
 
 主键索引的 B+ 树，叶子节点储存的是一行的完整数据。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/b_plus_tree_index_primary_key.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/b_plus_tree_index_primary_key.png)
 
 非主键索引的 B+ 树，叶子节点储存的是对应主键的值。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/b_plus_tree_index_secondary_key.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/b_plus_tree_index_secondary_key.png)
 
 通过主键索引查询，只需要搜索这一个索引树，就可以获取数据行的所有数据。通过非主键索引，会先获得主键，然后再通过主键去主键索引查询，这个过程称为“回表”，相比会多一次查询。
 

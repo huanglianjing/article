@@ -906,11 +906,11 @@ Gin 是在 Go 的标准库 net/http 的基础之上进行封装而成，一个�
 
 它们之间的交互流程如下图：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gin_procedure.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gin_procedure.png)
 
 其中设计的数据结构主要有用于缓存 gin.Context 对象的 sync.Pool，储存路由组的 RouterGroup，每个 HTTP 方法对应的路由树 gin.methodTrees。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gin_struct.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gin_struct.jpg)
 
 ## 4.2 服务启动
 
@@ -1088,7 +1088,7 @@ func (group *RouterGroup) handle(httpMethod, relativePath string, handlers Handl
 
 注册请求时，路由组的 handlers 和请求的 handler 合起来，放入路由树。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gin_post_handler.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gin_post_handler.jpg)
 
 执行一个 HTTP 请求时调用 Engine.handleHTTPRequest。
 
@@ -1133,7 +1133,7 @@ func (engine *Engine) handleHTTPRequest(c *Context) {
 * 将中间件 handlers 设置到 gin.Context 中
 * 依次执行 handlers 的中间件函数
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gin_handle_request.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gin_handle_request.jpg)
 
 上面找到对应路由树的节点后，获取了该路由请求所添加的中间件 handlers，调用 c.Next() 方法开始依次遍历调用中间件函数，handlers 中最后一个是该请求的业务处理函数。
 
@@ -1175,7 +1175,7 @@ func handler3() gin.HandlerFunc {
 }
 ```
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gin_next_handler.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gin_next_handler.jpg)
 
 Gin 限制了 handlers 索引到达 63 时会 panic，也就是一个请求最多只支持 62 个中间件。
 
@@ -1218,7 +1218,7 @@ type node struct {
 
 如图从左边几个已注册的路由，生成了右边的压缩前缀树。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/gin_radix_tree.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gin_radix_tree.jpg)
 
 # 5. 参考
 

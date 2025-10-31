@@ -1,6 +1,6 @@
 # 1. 简介
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/clickhouse_logo.webp)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/clickhouse_logo.webp)
 
 ClickHouse 是一款开源的列式存储的在线分析处理（OLAP，online analytical processing）数据库管理系统，专为大规模数据分析和实时查询而设计。
 
@@ -51,7 +51,7 @@ ClickHouse 采用 Multi-Master 多主架构，集群中的每个节点都是主�
 
 ClickHouse 架构核心模块如下：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/database/clickhouse_architecture.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/clickhouse_architecture.jpg)
 
 **Colume**
 

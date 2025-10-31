@@ -4,7 +4,7 @@
 
 内存管理一般包含三个不同的组件，分别是用户程序（Mutator）、内存分配器（Allocator）和垃圾收集器（Collector），当用户程序申请内存时，它会通过内存分配器申请新内存，而分配器会负责从堆中初始化相应的内存区域。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_memory_manage_3_part.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_memory_manage_3_part.png)
 
 # 2. 栈内存分配
 
@@ -14,7 +14,7 @@
 
 栈寄存器是 CPU 寄存器中的一种，它的主要作用是跟踪函数的调用栈，Go 语言的汇编代码包含 BP 和 SP 两个栈寄存器，它们分别存储了栈的基址指针和栈顶的地址。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_stack_registers.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_stack_registers.png)
 
 因为历史原因，栈区内存都是从高地址向低地址扩展的，当应用程序申请或者释放栈内存时只需要修改 SP 寄存器的值，时间开销非常小。
 
@@ -68,11 +68,11 @@ Go 语言使用用户态线程 Goroutine 作为执行上下文，它的额外开
 
 如下图，在申请了三块内存之后：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_bump_allocator_1.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_bump_allocator_1.png)
 
 回收释放其中一块内存后：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_bump_allocator_2.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_bump_allocator_2.png)
 
 虽然线性分配器实现为它带来了较快的执行速度以及较低的实现复杂度，但是线性分配器无法在内存被释放时重用内存。它需要与合适的垃圾回收算法配合使用，例如：标记压缩（Mark-Compact）、复制回收（Copying GC）和分代回收（Generational GC）等算法，它们可以通过拷贝的方式整理存活对象的碎片，将空闲内存定期合并。
 
@@ -82,7 +82,7 @@ Go 语言使用用户态线程 Goroutine 作为执行上下文，它的额外开
 
 空闲链表分配器会对空闲内存维护一个链表当用户程序申请内存时，空闲链表分配器会依次遍历空闲的内存块，找到足够大的内存，然后申请新的资源并修改链表。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_free_list_allocator.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_free_list_allocator.png)
 
 分配内存时需要遍历链表，时间复杂度为O(n)，在链表中选择内存块有不同策略：
 
@@ -97,7 +97,7 @@ Go 使用的内存选择策略类似于隔离适应，隔离适应的分配策�
 
 Go 程序在启动时会虚拟化整片虚拟内存区域，这些内存并不是真正存在的物理内存，而是虚拟内存。包含 spans、bitmap、arena 三部分：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_heap_1.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_heap_1.png)
 
 spans 区域存储了指向内存管理单元 runtime.mspan 的指针，每个内存单元会管理几页的内存空间，每页大小为 8KB。bitmap 用于标识 arena 区域中的那些地址保存了对象，每一位表示一个字节是否空闲。arena 区域是真正的堆区，运行时会将 8KB 看做一页，这些内存页中存储了所有在堆上初始化的对象。
 
@@ -105,7 +105,7 @@ spans 区域存储了指向内存管理单元 runtime.mspan 的指针，每个�
 
 以上是 Go 1.10 及之前的版本，堆区内存空间是连续的，在 1.11 后 arena 改为使用稀疏内存，解除了堆大小的 512GB 内存上限，但内存不连续也使得内存管理 变得更加复杂。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_heap_2.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_heap_2.png)
 
 ## 3.3 分级分配
 
@@ -113,13 +113,13 @@ Go 语言的内存分配器借鉴了 TCMalloc（Thread-Caching Malloc，线程�
 
 分配器使用线程缓存（Thread Cache）、中心缓存（Central Cache）和页堆（Page Heap）三个组件分级管理内存。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_multi_level_cache.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_multi_level_cache.png)
 
 线程缓存属于每一个独立的线程，因为不涉及多线程，所以也不需要使用互斥锁来保护内存，这能够减少锁竞争带来的性能损耗。当线程缓存不能满足需求时，运行时会使用中心缓存作为补充解决小对象的内存分配，中心缓存是多个线程共享的，访问时需要加锁。在遇到 32KB 以上的对象时，内存分配器会选择页堆直接分配大内存，当页堆内存不够时，则会通过系统调用向操作系统申请更多内存。
 
 Go 程序启动时，将会初始化如下图所示的内存布局。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_memory_layout.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_memory_layout.png)
 
 每个处理器会分配一个线程缓存 runtime.mcache，它会持有内存管理单元 runtime.mspan，用于处理微对象和小对象的分配。
 
@@ -151,15 +151,15 @@ type mspan struct {
 
 作为节点，mspan 通过 next 和 prev 指针构成一个双向链表。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_mspan_linked_list.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_mspan_linked_list.png)
 
 当用户程序或者线程向 mspan 申请内存时，它会使用 allocCache 字段以对象为单位在管理的内存中快速查找待分配的空间。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_mspan_search.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_mspan_search.png)
 
 当 mspan 管理的内存不足时，会以页为单位向堆申请内存。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_mspan_alloc.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_mspan_alloc.png)
 
 mspan.spanclass 表示对象的跨度类，它决定了内存管理单元中存储的对象大小和个数。
 
@@ -262,11 +262,11 @@ type mheap struct {
 
 成员变量 central 是全局的中心缓存列表，包含一个长度为 136 的 runtime.mcentral 数组，其中 68 个为跨度类需要 scan 的中心缓存，另外的 68 个是 noscan 的中心缓存。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_mheap_central.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_mheap_central.png)
 
 成员变量 arenas 负责管理所有稀疏内存空间的二维数组，它是 heapArena 指针的数组的指针的数组，其中一个 heapArena 对象负责管理 64MB 的内存空间。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_mheap_arenas.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_mheap_arenas.png)
 
 ## 3.4 对象分类与内存分配
 
@@ -310,7 +310,7 @@ func mallocgc(size uintptr, typ *_type, needzero bool) unsafe.Pointer {
 
 微分配器可以将多个较小的内存分配请求合入同一个内存块中，只有当内存块中的所有对象都需要被回收时，整片内存才可能被回收。例如，微分配器已经在 16 字节的内存块中分配了 12 字节的对象，如果下一个待分配的对象小于 4 字节，它会直接使用上述内存块的剩余部分，减少内存碎片。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_tiny_allocator.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_tiny_allocator.png)
 
 # 4. 垃圾回收
 
@@ -327,11 +327,11 @@ Go 采用的是三色标记法标记和清理内存，使用混合写屏障策�
 
 在标记阶段，内存空间中包含多个对象，我们从根对象出发依次遍历对象的子对象并将从根节点可达的对象都标记成存活状态，即 A、C 和 D 三个对象，剩余的 B、E 和 F 三个对象因为从根节点不可达，所以会被当做垃圾。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_mark_sweep_mark_phase.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_mark_sweep_mark_phase.png)
 
 标记阶段结束后会进入清除阶段，在该阶段中收集器会依次遍历堆中的所有对象，释放其中没有被标记的 B、E 和 F 三个对象并将新的空闲内存空间以链表的结构串联起来，方便内存分配器的使用。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_mark_sweep_sweep_phase.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_mark_sweep_sweep_phase.png)
 
 以上是最基础的标记清除算法，垃圾收集器从垃圾收集的根对象出发，递归遍历这些对象指向的子对象并将所有可达的对象标记成存活；标记阶段结束后，垃圾收集器会依次遍历堆中的对象并清除其中的垃圾。整个过程需要标记对象的存活状态，有长时间的 STW（stop the world），用户程序在垃圾收集的过程中不能执行。
 
@@ -354,11 +354,11 @@ Go 采用的是三色标记法标记和清理内存，使用混合写屏障策�
 3. 重复上述两个步骤直到对象图中不存在灰色对象；
 4. 对没有被标记的白色对象进行 GC；
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_tri_color_mark_sweep.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_tri_color_mark_sweep.png)
 
 当三色的标记清除的标记阶段结束之后，应用程序的堆中就不存在任何的灰色对象，我们只能看到黑色的存活对象以及白色的垃圾对象，垃圾收集器可以回收这些白色的垃圾，下面是使用三色标记垃圾收集器执行标记后的堆内存，堆中只有对象 D 为待回收的垃圾：
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_tri_color_mark_sweep_after_mark_phase.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_tri_color_mark_sweep_after_mark_phase.png)
 
 因为用户程序可能在标记执行的过程中修改对象的指针，所以三色标记清除算法本身是不可以并发或者增量执行的，它仍然需要 STW。
 
@@ -389,7 +389,7 @@ writePointer(slot, ptr)
 
 如下图示例，当 A 从指向 B 修改为指向 C 时，将 C 置为灰色，它们最后都会被标记为黑色，避免了 C 被错误地回收。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_dijkstra_insert_write_barrier.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_dijkstra_insert_write_barrier.png)
 
 这是一种相对保守的屏障技术，它会将有存活可能的对象都标记成灰色以满足强三色不变性，实际上不再存活的 B 对象在这个循环中仍然存活，直至下一个循环才会被标记回收。
 
@@ -405,7 +405,7 @@ writePointer(slot, ptr)
 
 如下图示例，当 A 从指向 B 改为指向 C 时，A 原本指向的 B 已经是灰色，所以不会改变 B 的颜色。当 B 指向 C 引用删除时，B 原本指向的 C 从白色改为灰色，保证了 C 以及下游对象在垃圾收集循环中存活。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_yuasa_delete_write_barrier.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_yuasa_delete_write_barrier.png)
 
 在老对象的引用被删除时，将白色的老对象涂成灰色，这样删除写屏障就可以保证弱三色不变性，老对象引用的下游对象一定可以被灰色对象引用，避免了出现悬挂指针。
 
@@ -432,11 +432,11 @@ writePointer(slot, ptr)
 
 增量垃圾收集是减少程序最长暂停时间的一种方案，它可以将原本时间较长的暂停时间切分成多个更小的 GC 时间片，虽然从垃圾收集开始到结束的时间更长了，但是这也减少了应用程序暂停的最大时间。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_incremental_collector.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_incremental_collector.png)
 
 并发垃圾收集不仅能够减少程序的最长暂停时间，还能减少整个垃圾收集阶段的时间，通过开启读写屏障、利用多核优势与用户程序并行执行。
 
-![](https://blog-1304941664.cos.ap-guangzhou.myqcloud.com/article_material/go/go_concurrent_collector.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_concurrent_collector.png)
 
 # 5. 参考
 
