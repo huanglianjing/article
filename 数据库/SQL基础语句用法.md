@@ -130,7 +130,7 @@ ALTER TABLE <表> DROP COLUMN <列>;
 修改列：
 
 ```sql
-ALTER TABLE <表> MODIFY COLUMN <列>;
+ALTER TABLE <表> MODIFY COLUMN <列> <调整点>;
 ```
 
 根据已有表创建同样结构的表：
@@ -201,12 +201,17 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 ```sql
 CREATE INDEX <索引> ON <表>(<列>);
-ALTER TABLE <表> ADD INDEX <索引>;
+ALTER TABLE <表> ADD INDEX <索引>(<列>);
+
+# 唯一索引
+CREATE UNIQUE INDEX <索引> ON <表>(<列>);
+ALTER TABLE <表> ADD UNIQUE INDEX <索引>(<列>);
 ```
 
 删除索引：
 
 ```sql
+DROP INDEX <索引> ON <表>;
 ALTER TABLE <表> DROP INDEX <索引>;
 ```
 

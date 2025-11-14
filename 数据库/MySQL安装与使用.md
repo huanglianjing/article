@@ -168,6 +168,14 @@ default-storage-engine 表示默认存储引擎，默认为 InnoDB。
 
 datadir 指定数据目录。MySQL 的数据目录一般在安装目录的 data 目录。
 
+## 2.6 操作
+
+如果在 MySQL 客户端中 ctrl + w 删除了一行的字符而不是一个单词，在 ~/.editrc 添加：
+
+```ini
+bind "^W" ed-delete-prev-word
+```
+
 # 3. 客户端
 
 客户端登陆

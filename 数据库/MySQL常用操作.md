@@ -1,4 +1,15 @@
-# 1. 数据库性能排查
+# 1. 数据库状态
+
+查看数据库状态：
+
+```mysql
+# 显示服务器的状态变量
+SHOW STATUS;
+
+# 显示连接的概要信息
+STATUS;
+\s
+```
 
 查看执行情况：
 
@@ -22,14 +33,25 @@ SELECT * FROM information_schema.INNODB_LOCKS;
 SELECT * FROM information_schema.INNODB_LOCK_WAITS;
 ```
 
-# 2. 复制表数据
+查看表的状态：
 
-如果表的行数不多，直接用 insert select 语句复制并插入。
+```mysql
+# 查看表的更新时间
+select TABLE_SCHEMA,TABLE_NAME,TABLE_ROWS,CREATE_TIME,UPDATE_TIME from information_schema.tables where table_name like '%gdt%';
+```
+
+# 2. 数据备份和导入
+
+**一张表复制到另一张表**
+
+用 insert select 语句，可以从一张表查询结果然后插入另一张表。
 
 ```mysql
 INSERT INTO TABLE2 (col1, col2, col3)
 SELECT col1, col2, col3 FROM TABLE1 Where a > 100;
 ```
+
+**mysqldump 备份**
 
 如果表比较大，可以用 mysqldump 导出表的全部或部份数据。
 
@@ -43,13 +65,15 @@ mysqldump -h$host -P$port -u$user --add-locks=0 --no-create-info --single-transa
 SOURCE a.sql
 ```
 
-也可以导出为 csv 文件。
+**备份为 csv 文件**
+
+将查询数据导出为 csv 文件。
 
 ```mysql
 select * from db1.t where a>900 into outfile 'a.csv';
 ```
 
-然后导入 csv 文件。
+然后导入 csv 文件到表中。
 
 ```mysql
 load data infile 'a.csv' into table db2.t;
@@ -207,5 +231,13 @@ SHOW SLAVE STATUS;
 
 ```mysql
 UNLOCK TABLES;
+```
+
+# 6. 表的设置
+
+将表的自增id设置为指定值：
+
+```mysql
+ALTER TABLE <表> auto_increment=1;
 ```
 
