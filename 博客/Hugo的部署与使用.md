@@ -205,13 +205,13 @@ http {
         # 2. 配置域名
         server_name  huanglianjing.com;
         # 3. 配置public文件夹的绝对路径
-        root         /root/git/huanglianjing.com/public;
+        root         /root/huanglianjing.com/public;
 
         # Load configuration files for the default server block.
         include /etc/nginx/default.d/*.conf;
 
         location / {
-            root /root/git/huanglianjing.com/public;
+            root /root/huanglianjing.com/public;
             index index.html index.htm;
         }
 
@@ -231,7 +231,7 @@ http {
         # 5. 配置域名
         server_name  huanglianjing.com;
         # 6. 配置public文件夹的绝对路径
-        root         /root/git/huanglianjing.com/public;
+        root         /root/huanglianjing.com/public;
 
         # 6. 配置ssl证书路径
         ssl_certificate "/etc/nginx/huanglianjing.com_bundle.crt";

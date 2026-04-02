@@ -53,6 +53,16 @@ ID int NOT NULL PRIMARY KEY AUTO_INCREMENT, # 主键
 
 索引下推（index condition pushdown) 是指在通过一个索引查询时，先对索引中包含的字段过滤掉不满足条件的记录，然后再对未过滤的记录去主键索引进行回表查询，可以减少回表次数。
 
+**INCLUDE 索引**
+
+INCLUDE 索引在 MySQL 8.0 引入，允许索引中包含非索引键列，这些列不作为索引键，不影响索引层级结构，仅存储在叶子节点，用来在查询这些额外列时满足索引覆盖，而不用回表查询。
+
+```mysql
+CREATE INDEX index_name
+ON table_name (col1, col2, ...)
+INCLUDE (col3, col4, ...);
+```
+
 # 3. MyISAM 索引模型
 
 MyISAM 的索引和 InnoDB 不同，它的表数据和索引是分开的，表数据存储在 MYD 文件中，索引存储在 MYI 文件中。所有索引都是非聚簇索引，索引存储的是数据行的行号而非数据，也就是所有索引的查询都必须再去表数据查询一次。

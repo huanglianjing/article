@@ -134,6 +134,18 @@ func TryWrite(ch chan string, str string) bool {
 }
 ```
 
+如果向通道发送的消息是通知触发，多次通知只需要消费至少一次就够了，还可以创建一个容量为 1 的通道，然后通过非阻塞写，来优雅实现最多发送一次。
+
+```go
+ch := make(chan struct{}, 1) // 容量为 1
+for {
+	select {
+	case ch <- struct{}{}: // 尝试发送
+	default： // 通道已满时发送失败，跳过
+	}
+}
+```
+
 # 2. 实现原理
 
 ## 2.1 数据结构
