@@ -146,6 +146,18 @@ for {
 }
 ```
 
+结合 time.After 和通道接收，实现有超时失败的接收：
+
+```go
+ch := make(chan int)
+select {
+case val := <- ch:
+	fmt.Println("收到:", val)
+case <- time.After(time.Millisecond * 100):
+	fmt.Println("超时，放弃等待")
+}
+```
+
 # 2. 实现原理
 
 ## 2.1 数据结构

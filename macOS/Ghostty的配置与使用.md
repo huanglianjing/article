@@ -133,3 +133,11 @@ ghostty +list-actions
 ghostty --reset-config
 ```
 
+# 5. 问题处理
+
+如果在 root 用户下，回车后光标会出现在提示符中，打字会覆盖提示符，需要在 root 中设置环境变量。
+
+```bash
+sudo echo 'TERM=xterm-256color' >> /var/root/.bashrc
+```
+
