@@ -41,6 +41,18 @@ JSON 的对象是一个无序的名称/值对的集合，以左括号`{`开始�
 
 值（value）包括数组（string）、数值（number）、布尔值（boolean）、null、对象（object）、数组（array）。
 
+JSONC 格式是带注释的 JSON（JSON with Comments），大部分语言标准库的 JSON 解析器不支持 JSONC，需要使用支持它的库。
+
+```json
+{
+  // 应用名称
+  "name": "app",
+
+  /* 是否开启调试 */
+  "debug": true,
+}
+```
+
 # 2. XML
 
 XML 全程 Extensible Markup Language，用于结构化存储数据，但是相比于 JSON 更加冗长。

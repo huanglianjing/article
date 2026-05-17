@@ -1271,6 +1271,28 @@ umask 022
 sync
 ```
 
+## dd
+
+按块复制和转换数据
+
+```bash
+dd if=<输入文件> of=<输出文件> bs=<块大小> count=<块数> [选项]
+
+# 备份磁盘
+dd if=/dev/sda of=disk-backup.img bs=64K status=progress conv=noerror,sync
+
+# 写一个1G大的文件
+dd if=/dev/zero of=bigfile bs=1M count=1024 status=progress
+```
+
+选项：
+
+* status=progress 显示进度
+* conv=noerror 读取错误时继续
+* conv=sync 出错或短读时用 0 补齐块
+* conv=fsync 结束前把数据同步写入磁盘
+* conv=notrunc 不截断输出文件
+
 # 9. 用户
 
 ## who
@@ -2009,13 +2031,13 @@ command：
 * i插入
   * '2i text' 每行前插入文本
 
--i 修改后的内容保存到文件
+  -i 修改后的内容保存到文件
 
--r 使用正则表达式（旧版本）
+  -r 使用正则表达式（旧版本）
 
--E 使用正则表达式（新版本）
+  -E 使用正则表达式（新版本）
 
--n 安静模式，只有p有输出
+  -n 安静模式，只有p有输出
 
 ```bash
 sed '<command>' <file>
