@@ -268,7 +268,7 @@ ctrl + c
 /branch
 ```
 
-查看上下文使用情况，包含系统提示词、skills、信息、可用空间等的占比。
+查看上下文使用情况，包含系统提示词、skills、信息、可用空间等的占比，如果有插件、子 agent、skills、CLAUDE.md 等也会列出来 token 占用。
 
 ```
 /context

@@ -34,6 +34,35 @@ x, ok := <-ch // 接收，赋值变量且判断是否成功读取
 <-ch          // 接收，丢弃结果
 ```
 
+通过 select 可以同时监听 context 结束和多个通道的输出，取出一个来执行，再通过 for 循环执行。
+
+```go
+for {
+	select {
+	case <-ctx.Done():
+		return
+	case i := <-ch1:
+		fmt.Println("recv ch1:", i)
+	case j := <-ch2:
+		fmt.Println("recv ch2:", j)
+	}
+}
+```
+
+如果只监听一个通道，则可以通过 for range 来简单实现。
+
+```go
+// 接收数据
+for msg := range ch {
+	fmt.Println(msg)
+}
+
+// 接收信号
+for range ch {
+	fmt.Println("notify")
+}
+```
+
 通道还有一个操作：关闭（close）。关闭后发送操作将导致 panic，而接收操作将获取缓冲区的值，直至通道为空，后续再接收将获取到通道元素类型对应的零值。
 
 ```go
@@ -48,6 +77,21 @@ close(done)
 select {
 case <-done:
 	fmt.Println("done")
+}
+```
+
+一直监听一个通道直至其关闭，能够接收到其关闭的信号。
+
+```go
+for {
+	select {
+	case v, ok := <-ch:
+		if !ok {
+			fmt.Println("channel closed")
+			return
+		}
+		fmt.Println("recv:", v)
+	}
 }
 ```
 
