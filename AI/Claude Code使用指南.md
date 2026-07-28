@@ -24,6 +24,9 @@ sudo npm install -g @anthropic-ai/claude-code
 
 # 更新
 sudo npm update -g @anthropic-ai/claude-code
+
+# 安装指定版本
+sudo npm install -g @anthropic-ai/claude-code@2.1.153
 ```
 
 安装完成后，在启动前需要先开启代理和 TUN 模式，最好再通过命令检测一下，确保当前 IP 地区不是中国大陆或香港，否则启动的时候会报错地区不支持 Claude。
@@ -54,10 +57,12 @@ claude
 
 在 ~/.bashrc 中添加以下配置，然后重新打开一个新的终端，这种方式对当前终端有效，优先级更高。具体内容包含实际的 key，从 ZenMux 网页中复制。
 
-```
+```bash
 export ANTHROPIC_BASE_URL="https://zenmux.ai/api/anthropic"
 export ANTHROPIC_AUTH_TOKEN=<ZENMUX_API_KEY>
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC="1"
+export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS="1"
+export CLAUDE_CODE_ATTRIBUTION_HEADER="0"
 export API_TIMEOUT_MS="30000000"
 export ANTHROPIC_API_KEY=""
 
@@ -449,6 +454,29 @@ settings.json 是 Claude Code 的配置文件，以 json 格式存储配置。
 * statusLine：自定义状态栏；
 * extraKnownMarketplaces：已安装的 marketplace；
 * enabledPlugins：已安装的 plugin；
+
+减少频繁确认，放开更多权限：
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Read(./**)",
+      "Write(./**)",
+      "Edit(./**)",
+      "Glob(./**)",
+      "Grep(./**)",
+      "WebFetch",
+      "WebSearch",
+      "NotebookEdit(./**)",
+      "Agent",
+      "SendMessage",
+      "Skill"
+    ]
+  }
+}
+```
 
 ## 3.4 .credentials.json
 

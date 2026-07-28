@@ -691,6 +691,14 @@ uptime
 ps -ef
 ```
 
+## pwdx
+
+查看指定进程的工作目录
+
+```bash
+pwdx 12345
+```
+
 ## pstree
 
 打印进程树
@@ -947,7 +955,11 @@ fuser a.log
 -p 展示pid和程序名称
 
 ```bash
+# Linux
 netstat -tunap
+
+# macOS
+netstat -an
 
 # 查看监听中的端口
 netstat -tunap | grep LISTEN
