@@ -364,6 +364,9 @@ passwd
 
 # 修改指定用户密码，只有 root 能使用
 passwd <user>
+
+# 创建 root 用户并设置密码
+sudo passwd root
 ```
 
 ## service
@@ -393,6 +396,8 @@ service <serv> restart
 
 管理的服务可以在 `/usr/lib/systemd/system`  中查看
 
+例如有一个服务 `blog_server`，服务名称 `<serv>` 既可以写 `blog_server`，也可以写 `blog_server.service`。
+
 ```bash
 # 查看服务状态
 systemctl status <serv>
@@ -419,6 +424,28 @@ systemctl list-unit-files # 安装的单元
 
 # 重新加载系统配置
 systemctl daemon-reload
+```
+
+通过 journalctl 管理服务日志
+
+```bash
+# 查看所有服务的日志
+journalctl
+
+# 查看服务日志
+journalctl -u <serv>
+
+# 查看服务最后几行日志
+journalctl -u <serv> -n 10
+
+# 追加查看服务日志
+journalctl -u <serv> -f
+
+# 查看服务最近一次启动起的日志
+journalctl -u <serv> -b
+
+# 查看服务指定等级以上的日志，按严重程度排：emerg/alert/crit/err/warning/notice/info/debug
+journalctl -u <serv> -p err
 ```
 
 ## ulimit

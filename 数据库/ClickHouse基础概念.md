@@ -1,6 +1,6 @@
 # 1. 简介
 
-![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/clickhouse_logo.webp)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/clickhouse_logo.svg)
 
 ClickHouse 是一款开源的列式存储的在线分析处理（OLAP，online analytical processing）数据库管理系统，专为大规模数据分析和实时查询而设计。
 

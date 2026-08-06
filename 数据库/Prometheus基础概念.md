@@ -1,6 +1,6 @@
 # 1. 简介
 
-![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/prometheus_logo.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/prometheus_logo.svg)
 
 Prometheus 是一个开源的服务监控系统和时序数据库，提供了通用的数据模型和快捷的数据采集、存储和查询接口。Prometheus 将指标收集并存储为时间序列数据，即将指标信息、可选的 KV 标签值和记录时的时间戳一起存储。通过指标的收集和查询，我们可以更好地了解系统的运行状态，帮助排查定位异常问题的具体原因。
 

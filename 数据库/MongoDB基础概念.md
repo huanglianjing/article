@@ -1,6 +1,6 @@
 # 1. 简介
 
-![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mongodb_logo.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mongodb_logo.svg)
 
 MongoDB 是一款开源的文档数据库，具有灵活的数据模型、高性能和易扩展性，常用于处理非结构化或半结构化数据的应用开发，适合需要快速迭代、数据格式多样化、追求水平扩展的项目。
 

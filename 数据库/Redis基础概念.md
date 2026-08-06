@@ -1,6 +1,6 @@
 # 1. 简介
 
-![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_logo.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_logo.svg)
 
 Redis 全称是 REmote Dictionary Server，是一个基于键值对（key - value）的 NoSQL 数据库。它将所有数据存放在内存中，所以它的读写性能非常惊人。
 

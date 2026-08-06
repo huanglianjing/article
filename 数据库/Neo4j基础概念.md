@@ -1,6 +1,6 @@
 # 1. 简介
 
-![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/neo4j_logo.jpg)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/neo4j_logo.svg)
 
 Neo4j 是一款高性能的图数据库，使用 Java 语言开发。它将结构化数据存储在网络（图）上而不是传统的表中，使用节点、关系、属性来存储和表示数据，这种数据模型使其能够处理高度互联、关系复杂的数据。
 

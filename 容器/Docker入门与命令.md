@@ -1,6 +1,6 @@
 # 1. 简介
 
-![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/container/docker_logo.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/container/docker_logo.svg)
 
 Docker 由 Docker 公司开发，是一个能把应用程序自动部署到容器的开源引擎。
 

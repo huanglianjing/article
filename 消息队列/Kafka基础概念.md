@@ -1,6 +1,6 @@
 # 1. 介绍
 
-![kafka_logo](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_logo.jpg)
+![kafka_logo](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_logo.svg)
 
 Kafka是LinkedIn采用Scala开发的一个多分区、多副本、基于ZooKeeper协调的分布式消息系统，已被捐献给Apache基金会。kkokokokKafka定位为一个分布式流式处理平台，包含高吞吐、可持久化、可水平扩展、支持流数据处理等特性。
 

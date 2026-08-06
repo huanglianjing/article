@@ -1,6 +1,6 @@
 # 1. 简介
 
-![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_logo.webp)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_logo.svg)
 
 MySQL 是一款开源的关系型数据库管理系统（RDBMS），以高性能、可靠性、易用性和低成本著称。
 

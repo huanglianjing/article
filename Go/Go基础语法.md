@@ -1,4 +1,4 @@
-![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_logo.png)
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/go_logo.svg)
 
 # 1. 程序结构
 

@@ -10,6 +10,7 @@ ls -l /proc/12345/
 
 # 工作目录
 ls -l /proc/12345/cwd
+pwdx 12345
 
 # 程序文件路径
 ls -l /proc/12345/exe
