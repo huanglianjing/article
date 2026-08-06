@@ -1,0 +1,41 @@
+- title: "Linux shell基础语法"
+  date: "2025-05-17 23:26:43"
+  tags:
+    - "Linux"
+    - "shell"
+- title: "Linux基础命令用法"
+  date: "2023-08-10 22:53:37"
+  tags:
+    - "Linux"
+    - "命令"
+- title: "Linux常用系统操作"
+  date: "2025-05-05 23:30:54"
+  tags:
+    - "Linux"
+- title: "Linux软件安装工具的使用"
+  date: "2025-05-17 23:31:47"
+  tags:
+    - "Linux"
+    - "apt"
+    - "yum"
+    - "rpm"
+- title: "Makefile基础语法"
+  date: "2025-05-25 23:32:16"
+  tags:
+    - "Linux"
+    - "Makefile"
+- title: "Vim操作命令"
+  date: "2021-07-16 02:33:20"
+  tags:
+    - "Linux"
+    - "Vim"
+- title: "crontab定时任务的用法"
+  date: "2024-11-03 10:03:50"
+  tags:
+    - "Linux"
+    - "crontab"
+- title: "我的开发配置"
+  date: "2025-04-13 17:41:45"
+  tags:
+    - "Linux"
+    - "配置"
