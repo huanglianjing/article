@@ -756,6 +756,14 @@ pstree -p 1234
 pgrep <process>
 ```
 
+## pidof
+
+根据进程名称获取进程id
+
+```bash
+pidof <process>
+```
+
 ## jobs
 
 当前终端在后台运行的进程

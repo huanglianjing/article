@@ -3,3 +3,12 @@
   tags:
     - "博客"
     - "Hugo"
+- title: "新版博客的设计与实现"
+  date: "2026-08-30 21:28:05"
+  tags:
+    - "博客"
+    - "Go"
+    - "Gin"
+    - "GORM"
+    - "SQLite"
+    - "Vue"
