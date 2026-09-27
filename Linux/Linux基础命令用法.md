@@ -222,7 +222,7 @@ find . -name '*.cpp' | xargs grep 'stdlib.h'
 
 定期执行命令并输出结果
 
--n x 指定间隔x秒
+-n x 指定间隔x秒，默认间隔为 2 秒
 
 -d 高亮显示输出差异
 
@@ -824,6 +824,22 @@ free
 
 ```bash
 vmstat
+```
+
+## vmtouch
+
+查看文件缓存状态，对文件或目录运行，查看它有多少数据页当前驻留在物理内存中。
+
+-t 将文件加载到缓存中
+
+-e 将文件从缓存中驱逐
+
+-l 将文件锁定在内存中
+
+-i \<pattern\> 忽略匹配的模式
+
+```bash
+vmtouch file
 ```
 
 ## mpstat
@@ -2013,6 +2029,50 @@ echo <text>
 
 ```bash
 od <file>
+```
+
+## jq
+
+轻量级 JSON 处理器
+
+-c 紧凑输出，不换行
+
+-r 输出原始字符串，去掉引号
+
+-S 按 key 排序输出
+
+--tab / --indent n 控制缩进
+
+```bash
+# 输出彩色、格式化的 JSON
+cat data.json | jq
+jq '' data.json
+
+# 取字段
+jq '.key' data.json
+jq '.key.a' data.json
+jq '.key1,.key2' data.json # 输出多个结果
+
+# 修改数据（不修改文件）
+jq '.version = "2.0.0"' data.json  # 修改字段
+jq '. + {"env": "prod"}' data.json # 新增字段
+jq 'del(.config)' data.json        # 删除字段
+jq '{name, version}' data.json     # 只保留部分字段
+
+# 数组操作
+jq '.arr[0]' data.json
+jq '.arr[1:3]' data.json
+jq '.arr[-1]' data.json    # 最后一个元素
+jq '.arr[]' data.json      # 逐个输出元素
+jq '.arr|length' data.json # 数组长度
+jq '.users[] | select(.role == "user")' data.json # 对象数组按成员过滤
+jq '.users | sort_by(.age)' data.json             # 对象数组按成员排序
+jq '.users[] | .name' data.json                   # 对象数组获取成员
+
+# 其他操作
+jq 'has("name")' data.json            # 是否存在key
+jq 'keys_unsorted' data.json          # 所有key排序输出
+jq 'keys' data.json                   # 所有key排序输出
 ```
 
 # 13. 文本处理

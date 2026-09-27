@@ -463,13 +463,10 @@ settings.json 是 Claude Code 的配置文件，以 json 格式存储配置。
     "allow": [
       "Bash(*)",
       "Read(./**)",
-      "Write(./**)",
       "Edit(./**)",
-      "Glob(./**)",
       "Grep(./**)",
       "WebFetch",
       "WebSearch",
-      "NotebookEdit(./**)",
       "Agent",
       "SendMessage",
       "Skill"
