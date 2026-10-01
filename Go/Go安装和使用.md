@@ -152,7 +152,7 @@ $ go run helloworld.go one two three # 带有运行参数
 
 -v 打印正在编译的包名
 
--x 显示正在执行的命名
+-x 显示正在执行的命令
 
 -gcflags 编译器参数
 
@@ -166,9 +166,9 @@ $ go run helloworld.go one two three # 带有运行参数
 -ldflags 链接器参数
 
 - -s 禁用符号表
-- -w 禁用DRAWF调试信息
+- -w 禁用DWARF调试信息
 - -X 设置字符串全局变量值 -X ver="0.99"
-- -H 这只可执行文件格式 -H windowsgui
+- -H 设置可执行文件格式 -H windowsgui
 
 ```bash
 $ go build helloworld.go

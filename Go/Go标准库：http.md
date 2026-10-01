@@ -515,9 +515,9 @@ func (srv *Server) Shutdown(ctx context.Context) error
 func (srv *Server) Close() error
 ```
 
-## 4.7 ServerMux
+## 4.7 ServeMux
 
-ServerMux 表示接收 HTTP 请求的路由表。
+ServeMux 表示接收 HTTP 请求的路由表。
 
 类型定义：
 

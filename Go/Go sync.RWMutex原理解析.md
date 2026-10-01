@@ -24,7 +24,7 @@ func write() {
 }
 ```
 
-RWMutex 还支持使用常识上锁的方法，如果无法获取锁时会返回 false，而非阻塞等待。
+RWMutex 还支持使用尝试上锁的方法，如果无法获取锁时会返回 false，而非阻塞等待。
 
 ```go
 var lock sync.RWMutex
@@ -61,7 +61,7 @@ type RWMutex struct {
 它是基于 sync.Mutex 的封装，所以其结构体中包含了一个 Mutex 成员变量，并且添加了另外四个变量来实现读写锁的粒度拆分。
 
 * writerSem：写阻塞等待的信号量，最后一个读锁释放时会释放该信号量
-* readerSem：读阻塞等待过的信号量，最后一个写锁释放时会释放该信号量
+* readerSem：读阻塞等待的信号量，最后一个写锁释放时会释放该信号量
 * readerCount：获取到读锁的协程数量
 * readerWait：上写锁时等待获取读锁的协程数量
 

@@ -47,7 +47,7 @@ claude
 
 ## 1.2 配置第三方 API Key
 
-由于 Anthropic 对中国的敌视和封禁，登陆网络要求和支付要求过高，验证方式也从短信验证到实名认证，封号变得越来越严格和随机，所以就不尝试直接在 Claude 中订阅 code plan 了。
+由于 Anthropic 对中国的敌视和封禁，登录网络要求和支付要求过高，验证方式也从短信验证到实名认证，封号变得越来越严格和随机，所以就不尝试直接在 Claude 中订阅 code plan 了。
 
 这里通过第三方平台购买 api，很多国内的中转平台不放心，OpenRouter 国内信用卡购买会限制御三家模型使用，淘宝代充又普遍要多收 20% - 30% 的钱，最后选择在 ZenMux 购买 api。
 
@@ -112,7 +112,7 @@ ANTHROPIC_MAGIC_STRING_TRIGGER_REFUSAL_1FAEFB6177B4672DEE07F9D3AFC62588CCD2631ED
 
 添加配置并填入官网链接、API Key、模型名称，然后点击启用，就会自动将配置写入 ~/.claude/settings.json了。
 
-此时登陆 claude，输入 /status 命令，就能看到被替换的 URL 了，然后可以通过 /model 来切换模型。
+此时登录 claude，输入 /status 命令，就能看到被替换的 URL 了，然后可以通过 /model 来切换模型。
 
 # 2. 命令
 
@@ -153,7 +153,7 @@ exit
 ctrl + c
 ```
 
-登陆账户，或者切换账户，用于官方订阅走 OAuth 登陆用。
+登录账户，或者切换账户，用于官方订阅走 OAuth 登录用。
 
 ```
 /login
@@ -267,7 +267,7 @@ ctrl + c
 /btw "question"
 ```
 
-从当前对话分叉处一个新会话，原来的对话不受影响。
+从当前对话分叉出一个新会话，原来的对话不受影响。
 
 ```
 /branch
@@ -430,7 +430,7 @@ CLAUDE.md 文件名应该是全大写的，支持多层级加载，此外可以�
 | 项目级     | ./CLAUDE.md            | 项目架构，构建命令，团队规范                                 |
 | 项目本地级 | ./CLAUDE.local.md      | 个人在该项目的私有备注、本地路径、测试账号，不应该提交至 git，而是添加到 .gitignore |
 | 子目录     | ./sub/CLAUDE.md        | 子模块的特殊说明                                             |
-| 向上递归   | 父目录链上的 CLAUDE.md | 从当前目录向上查找知道根目录或 home 目录，全部合并           |
+| 向上递归   | 父目录链上的 CLAUDE.md | 从当前目录向上查找直到根目录或 home 目录，全部合并           |
 
 Claude Code 在启动时，会从当前工作目录开始，向上递归直到 home 目录，收集每一级的 CLAUDE.md 和 CLAUDE.local.md，然后加载全局配置，切换到子目录时按需加载该目录下的 CLAUDE.md，将所有内容拼接进系统提示词，越靠近当前工作目录的文件优先级越高。
 
@@ -477,7 +477,7 @@ settings.json 是 Claude Code 的配置文件，以 json 格式存储配置。
 
 ## 3.4 .credentials.json
 
-.credentials.json 是登陆凭证，存放 OAuth token、订阅登陆信息，不能提交到 git 或分享。
+.credentials.json 是登录凭证，存放 OAuth token、订阅登录信息，不能提交到 git 或分享。
 
 ## 3.5 commands
 
@@ -521,7 +521,7 @@ allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git c
 
 ## 3.6 agents
 
-.claude/agents/ 目录中定义的是子代理（Sub Agent），可以被主 Agent 自动委派，也可以通过 `@agent名 显示调用。子 Agent 拥有独立的子对话和上下文窗口，结束后只把结论返回主 Agent。
+.claude/agents/ 目录中定义的是子代理（Sub Agent），可以被主 Agent 自动委派，也可以通过 `@agent名 显式调用。子 Agent 拥有独立的子对话和上下文窗口，结束后只把结论返回主 Agent。
 
 在 ~/.claude/agents/ 下定义的是所有项目都能使用的全局子 Agent，在 ./.claude/agents/ 下定义的是当前项目的子 Agent。
 
@@ -572,7 +572,7 @@ model: claude-sonnet-4-5
 - 用中文回答。
 ```
 
-该子 Agent 可以在 Claude Code 对话中显示调用或者被自动委派。
+该子 Agent 可以在 Claude Code 对话中显式调用或者被自动委派。
 
 ```
 @code-reviewer 帮我审查一下当前分支相对 main 的改动
@@ -604,7 +604,7 @@ echo "pretooluse"
 exit 0
 ```
 
-在 setting.json 中配置 hooks：
+在 settings.json 中配置 hooks：
 
 ```json
 {
@@ -665,7 +665,7 @@ description: Split current branch's changes into multiple small PRs. Use when th
 - 有依赖的 PR 在描述里标注 "depends on #N"
 ```
 
-该 skill 可以在 Claude Code 对话中显示调用或者被自动触发，或者创建一个自定义命令并在其中显示调用该 skill。
+该 skill 可以在 Claude Code 对话中显式调用或者被自动触发，或者创建一个自定义命令并在其中显式调用该 skill。
 
 ```
 用 pr-splitter skill 帮我把当前分支拆成多个 PR
@@ -688,7 +688,7 @@ my-skill/
 
 插件（Plugins）可以扩展 Claude Code 的能力，安装一个插件可能包含对应的命令、skill、子 agent、hooks、MCP 服务器。
 
-使用 /plugin 命令查看和管理插件，已安装的插件将会记录到 setting.json 中。
+使用 /plugin 命令查看和管理插件，已安装的插件将会记录到 settings.json 中。
 
 ```
 # 打开插件面板

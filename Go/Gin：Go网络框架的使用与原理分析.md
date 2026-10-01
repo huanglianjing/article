@@ -6,7 +6,7 @@ github仓库地址：https://github.com/gin-gonic/gin
 
 文档地址：https://pkg.go.dev/github.com/gin-gonic/gin
 
-Gin 是一个 Go 语言编写的的 HTTP Web 框架，它包含的特性如下：
+Gin 是一个 Go 语言编写的 HTTP Web 框架，它包含的特性如下：
 
 * 快速：基于 Radix 树的路由，小内存占用。没有反射。可预测的 API 性能；
 * 支持中间件：传入的 HTTP 请求可以由一系列中间件和最终操作来处理。 例如：Logger，Authorization，GZIP，最终操作 DB；
@@ -263,7 +263,7 @@ type Login struct {
 Gin 提供了两类绑定方法：
 
 * Must bind：包含方法 Bind, BindJSON, BindXML, BindQuery, BindYAML，如果发生绑定错误，则请求终止。
-* Shoud bind：包含方法 ShouldBind, ShouldBindJSON, ShouldBindXML, ShouldBindQuery, ShouldBindYAML，如果发生绑定错误，Gin 会返回错误并由开发者处理错误和请求。
+* Should bind：包含方法 ShouldBind, ShouldBindJSON, ShouldBindXML, ShouldBindQuery, ShouldBindYAML，如果发生绑定错误，Gin 会返回错误并由开发者处理错误和请求。
 
 通过调用 c.ShouldBind 方法将请求体 c.Request.Body 绑定到结构体，但是只能调用一次。
 
@@ -549,7 +549,7 @@ func SetMode(value string)
 
 ## 3.3 Context
 
-Content 可以在 middleware 之间传递变量，检验请求 JSON 的格式，生成返回的 JSON。
+Context 可以在 middleware 之间传递变量，检验请求 JSON 的格式，生成返回的 JSON。
 
 ```go
 type Context struct {
@@ -908,7 +908,7 @@ Gin 是在 Go 的标准库 net/http 的基础之上进行封装而成，一个�
 
 ![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gin_procedure.png)
 
-其中设计的数据结构主要有用于缓存 gin.Context 对象的 sync.Pool，储存路由组的 RouterGroup，每个 HTTP 方法对应的路由树 gin.methodTrees。
+其中涉及的数据结构主要有用于缓存 gin.Context 对象的 sync.Pool，储存路由组的 RouterGroup，每个 HTTP 方法对应的路由树 gin.methodTrees。
 
 ![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/go/gin_struct.jpg)
 
@@ -1057,7 +1057,7 @@ func (group *RouterGroup) Group(relativePath string, handlers ...HandlerFunc) *R
 }
 ```
 
-注册中间件时，如果在 Engine 对象注册中间件，则注册到根路由组。如果是在 RouterGroup 对象直接通过调用 Use 方法，则直接讲中间件注册到当前对象的 Handlers。如果是注册请求时带了中间件，则将路由组的 handlers 加上参数传入的 handlers 作为该请求的 handlers，再将 HTTP 方法、绝对路径、handlers 加入路由树。
+注册中间件时，如果在 Engine 对象注册中间件，则注册到根路由组。如果是在 RouterGroup 对象直接通过调用 Use 方法，则直接将中间件注册到当前对象的 Handlers。如果是注册请求时带了中间件，则将路由组的 handlers 加上参数传入的 handlers 作为该请求的 handlers，再将 HTTP 方法、绝对路径、handlers 加入路由树。
 
 ```go
 // Engine 对象注册中间件

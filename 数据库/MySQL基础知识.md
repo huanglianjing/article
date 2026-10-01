@@ -19,7 +19,7 @@ MySQL 主要应用于 Web 应用、中小型网站、嵌入式系统等使用场
 
 MySQL 属于客户端/服务器架构（C/S 架构），客户端向服务器发起请求，服务器负责响应客户端的请求、对存储的数据进行处理，服务器程序进程称为 MySQL 数据库实例（instance），可以同时处理多个客户端的连接和请求。
 
-MySQL 服务器的基本架构主要分为 Server 层和存储引擎两部份。Server 层包括连接器、查询缓存、优化器、执行器等，涵盖核心服务功能如存储过程、触发器、视图、内置函数。存储引擎层负责数据的存储和提取，支持 InnoDB、MyISAM、MEMORY 等，默认存储引擎是 InnoDB。
+MySQL 服务器的基本架构主要分为 Server 层和存储引擎两部分。Server 层包括连接器、查询缓存、优化器、执行器等，涵盖核心服务功能如存储过程、触发器、视图、内置函数。存储引擎层负责数据的存储和提取，支持 InnoDB、MyISAM、MEMORY 等，默认存储引擎是 InnoDB。
 
 ![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_architecture.jpg)
 
@@ -72,13 +72,13 @@ Buffer Pool 是 InnoDB 存储引擎的核心内存组件，通过将表和索引
 
 **内部结构**
 
-Buffer Pool 内部以页（Page）为单位进行管理，缓存页对应硬盘中的数据页，默认大小为 16KB。每个缓存页对应一个控制块（Control Block），它存储缓存页的元数据如表空间号、页号、锁信心等。此外还有几个管理链表，free 链表管理空闲的缓冲页，flush 链表管理被修改待刷新到磁盘的脏页，LRU 链表用于在没有空闲缓冲页时淘汰缓冲页。
+Buffer Pool 内部以页（Page）为单位进行管理，缓存页对应硬盘中的数据页，默认大小为 16KB。每个缓存页对应一个控制块（Control Block），它存储缓存页的元数据如表空间号、页号、锁信息等。此外还有几个管理链表，free 链表管理空闲的缓冲页，flush 链表管理被修改待刷新到磁盘的脏页，LRU 链表用于在没有空闲缓冲页时淘汰缓冲页。
 
 **淘汰算法**
 
-Buffer Pool 使用 LRU（最近最少使用）算法的变种作为缓存淘汰策略，在缓存满时淘汰最近最少使用的部份页，来释放空间。
+Buffer Pool 使用 LRU（最近最少使用）算法的变种作为缓存淘汰策略，在缓存满时淘汰最近最少使用的部分页，来释放空间。
 
-LRU 列表分为两个子列表，其中 5/8 的部份保存最近频繁访问的数据页，另外 3/8 部份保存访问频率较低的数据页。当 InnoDB 将数据页写入 Buffer Pool 时，如果是 SQL 发起的操作，将它插入新列表的头部，如果是 InnoDB 发起的预读操作，将它插入旧列表的头部。两个子列表中的页面随着数据插入逐渐向后移，并在移到旧列表尾部后被淘汰掉。
+LRU 列表分为两个子列表，其中 5/8 的部分保存最近频繁访问的数据页，另外 3/8 部分保存访问频率较低的数据页。当 InnoDB 将数据页写入 Buffer Pool 时，如果是 SQL 发起的操作，将它插入新列表的头部，如果是 InnoDB 发起的预读操作，将它插入旧列表的头部。两个子列表中的页面随着数据插入逐渐向后移，并在移到旧列表尾部后被淘汰掉。
 
 ![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_innodb_buffer_pool_list.png)
 
@@ -93,7 +93,7 @@ innodb_buffer_pool_size = 268435456
 
 **Change Buffer**
 
-Change Buffer 是 Buffer Pool 的一部份，用于缓存当二级索引页不在 Buffer Pool 中时的写操作。
+Change Buffer 是 Buffer Pool 的一部分，用于缓存当二级索引页不在 Buffer Pool 中时的写操作。
 
 对于插入、删除、更新操作产生的缓冲更改，若目标页不在 Buffer Pool，将变更记录写入 Change Buffer 生成 Redo Log 以保证持久化，后续读取该索引页时，将 Change Buffer 中的变更合并到 Buffer Pool，触发异步刷盘。
 
@@ -101,7 +101,7 @@ Change Buffer 是 Buffer Pool 的一部份，用于缓存当二级索引页不�
 
 对二级索引的插入、删除、更新操作往往顺序较为随机，Change Buffer 可以避免从磁盘读取二级索引页至 Buffer Pool 产生的大量随机访问 I/O。
 
-在磁盘上，Change Buffer 属于系统表空间的一部份，当服务器关闭时，索引变更将在此处缓冲存储。
+在磁盘上，Change Buffer 属于系统表空间的一部分，当服务器关闭时，索引变更将在此处缓冲存储。
 
 **Adaptive Hash Index**
 
@@ -151,9 +151,9 @@ Temporary Tablespace（临时表空间）存储创建的临时表和临时表的
 
 ### 3.1.4 Double Write Buffer
 
-InnoDB 的页大小为 16KB，而操作系统的页是 4KB 或 8KB，将一页数据刷到磁盘要写多页，并非原子操作，可能存在写了部份磁盘的页时发生断电。
+InnoDB 的页大小为 16KB，而操作系统的页是 4KB 或 8KB，将一页数据刷到磁盘要写多页，并非原子操作，可能存在写了部分磁盘的页时发生断电。
 
-InnoDB 会先把要刷到磁盘的页先写到内存中的 Double Write Buffer（双写缓冲），它包含内存和磁盘的部份，它会将内存中的部份同步到磁盘的部份。然后将一页数据写到磁盘中的多个页，如果发生崩溃，则从 Double Write Buffer 的磁盘部份取出进行崩溃恢复。
+InnoDB 会先把要刷到磁盘的页先写到内存中的 Double Write Buffer（双写缓冲），它包含内存和磁盘的部分，它会将内存中的部分同步到磁盘的部分。然后将一页数据写到磁盘中的多个页，如果发生崩溃，则从 Double Write Buffer 的磁盘部分取出进行崩溃恢复。
 
 ## 3.2 MyISAM
 
@@ -182,13 +182,13 @@ MySQL 常用字符集有：
 * GB2312：包含中文、日文、俄文、希腊字母、拉丁字母等，兼容 ASCII，每个字符 1 或 2 个字节；
 * GBK：对 GB2312 的扩充；
 * utf8（utf8mb3）：支持大部分 UTF-8 字符，每个字符 1 - 3 个字节；
-* utf8mb4：支持完整的 UTF-8 字符，每个字符 1 - 4 个字节，建议使用该字符集而不是 utf；
+* utf8mb4：支持完整的 UTF-8 字符，每个字符 1 - 4 个字节，建议使用该字符集而不是 utf8；
 
 比较规则规定了字符串比较是否区分大小写、是否区分重音、二进制方式比较等，每种字符集对应若干比较规则，可以从名称中对应，如 utf8_general_ci、gb2312_chinese_ci、utf8_bin 等。
 
 字符集和比较规则分为服务器、数据库、表、列四个级别。
 
-MySQL 服务器默认字符集是 utf8，默认比较规则是 utf8_general_ci，也可以通过配置修改，可以通过 show variable 查看。
+MySQL 服务器默认字符集是 utf8，默认比较规则是 utf8_general_ci，也可以通过配置修改，可以通过 show variables 查看。
 
 ```ini
 [server]
@@ -217,7 +217,7 @@ InnoDB 存储引擎支持多种行格式，它们在存储空间、空间效率�
 
 REDUNDANT（冗余格式）是最早的原始行格式，存储效率较低。NULL 值也会占用固定空间。适用于早期版本兼容和较短 BLOB 字段场景。
 
-COMPACT（紧凑格式）减少了部份存储空间，但 CPU 消耗略高。NULL 值使用二进制位标记，非 NULL 字段通过逆序排列，变长字段前 768 字节存本地，其余通过指针存在溢出页。包含事务 ID、回滚指针等隐藏列。适用于较多变长字段且平衡存储与查询性能的场景。
+COMPACT（紧凑格式）减少了部分存储空间，但 CPU 消耗略高。NULL 值使用二进制位标记，非 NULL 字段通过逆序排列，变长字段前 768 字节存本地，其余通过指针存在溢出页。包含事务 ID、回滚指针等隐藏列。适用于较多变长字段且平衡存储与查询性能的场景。
 
 DYNAMIC（动态格式）优化了大字段处理，大字段如 VARCHAR、BLOB 完全存在溢出页，本地保留 20 字节指针，支持大索引。适用于大量长文本、二进制数据的场景。
 
@@ -236,9 +236,9 @@ MySQL 从 5.7 开始默认行格式为 DYNAMIC，到了 8.0 移除了 REDUNDANT 
 
 MySQL 会自动创建几个系统数据库，其中包含了 MySQL 服务器运行所需的信息和运行状态。
 
-* mysql：存储 MySQL 的用户帐户和权限信息，运行过程的日志信息，帮助信息以及时区信息；
+* mysql：存储 MySQL 的用户账户和权限信息，运行过程的日志信息，帮助信息以及时区信息；
 * information_schema：保存 MySQL 服务器维护的所有其他数据库的信息，如有什么表、什么视图、触发器、列、索引等元数据；
-* performance_schema：MySQL 服务器运行过程的状态信息，统计最近执行的语句、每阶段话费的时间和内存使用情况；
+* performance_schema：MySQL 服务器运行过程的状态信息，统计最近执行的语句、每阶段花费的时间和内存使用情况；
 * sys：通过视图把 information_schema 和 performance_schema 结合起来；
 
 # 6. 执行计划
@@ -295,9 +295,9 @@ explain format=json select * from user where age = 10;
 
 MySQL 主备同步（Master-Slave Replication）通过将主库（Master）的数据同步到备库（Slave）来实现数据的冗余和故障切换。
 
-主备同步基于 binlog 实现的，主库将所有数据变更记录到 binlog，备库从主库拉去 binlog，解析为 SQL 语言后在备库重放，从而实现数据同步。
+主备同步基于 binlog 实现的，主库将所有数据变更记录到 binlog，备库从主库拉取 binlog，解析为 SQL 语言后在备库重放，从而实现数据同步。
 
-备库和主库之间维持了一个长连接，备库通过 change master 命令设置主库的地址、用户名密码、binlog 偏移量，然后执行 start slave 命令，启动 io_thread 线程与主库建立连接，将获取的 binlog 写到 relay log（中转日志），启动 sql_thread 线程读取 relay log 并解析命令和执行。主库内部有一个线程专用语服务备库的长连接，从指定位置读取 binlog 和发送给备库。
+备库和主库之间维持了一个长连接，备库通过 change master 命令设置主库的地址、用户名密码、binlog 偏移量，然后执行 start slave 命令，启动 io_thread 线程与主库建立连接，将获取的 binlog 写到 relay log（中转日志），启动 sql_thread 线程读取 relay log 并解析命令和执行。主库内部有一个线程专用于服务备库的长连接，从指定位置读取 binlog 和发送给备库。
 
 ![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_master_slave.jpg)
 

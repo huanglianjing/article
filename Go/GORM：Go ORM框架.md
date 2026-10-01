@@ -4,7 +4,7 @@ github仓库地址：https://github.com/go-gorm/gorm
 
 文档地址：https://pkg.go.dev/gorm.io/gorm
 
-GORM 是一个 Go 语言下的 ORM 库。ORM 全称 Object Relational Mapping（对象关系映射），用于实现面向对象编程语言里数据之间的转换，应用程序通过它可以连接关系型数据库并读写数据。GORM 支持的数据库类型包括： MySQL、PostreSQL、SQLite、SQL Server、TiDB。
+GORM 是一个 Go 语言下的 ORM 库。ORM 全称 Object Relational Mapping（对象关系映射），用于实现面向对象编程语言里数据之间的转换，应用程序通过它可以连接关系型数据库并读写数据。GORM 支持的数据库类型包括： MySQL、PostgreSQL、SQLite、SQL Server、TiDB。
 
 ## 1.1 模型
 
@@ -46,7 +46,7 @@ type Model struct {
 
 ## 1.2 标签
 
-当 GORM 需要将数据库重的表记录的对象与程序中的结构体进行字段映射时，可以设置结构体成员变量的各种标签，以定义字段的对应关系和行为。
+当 GORM 需要将数据库中的表记录的对象与程序中的结构体进行字段映射时，可以设置结构体成员变量的各种标签，以定义字段的对应关系和行为。
 
 GORM 读取的标签为 `gorm:""`，具体设置放在双引号中，一个字段的标签可以定义多个属性，通过 `;` 分隔。
 
@@ -552,7 +552,7 @@ db.InnerJoins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` INNER JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-**记数**
+**计数**
 
 ```go
 // 计数
@@ -604,7 +604,7 @@ db.Save(&user)
 
 Update 方法更新单列，需要指定一些条件，否则会引起 ErrMissingWhereClause 错误。
 
-Updates 方法更新多列，支持 struct 和 map 参数，当使用 struct 更新是默认只更新非零值字段。
+Updates 方法更新多列，支持 struct 和 map 参数，当使用 struct 更新时默认只更新非零值字段。
 
 在更新时可以通过 Select 和 Omit 方法选择、忽略某些字段。
 

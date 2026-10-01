@@ -53,9 +53,9 @@ ClickHouse 架构核心模块如下：
 
 ![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/clickhouse_architecture.jpg)
 
-**Colume**
+**Column**
 
-内存中的一列数据由一个 Colume 对象表示，分为接口和实现两部份，IColumn 接口定义了对数据进行各种关系运算的方法，这些方法根据数据类型不同，由响应的对象实现。
+内存中的一列数据由一个 Column 对象表示，分为接口和实现两部分，IColumn 接口定义了对数据进行各种关系运算的方法，这些方法根据数据类型不同，由相应的对象实现。
 
 **Field**
 
@@ -67,11 +67,11 @@ DataType 负责数据的序列化和反序列化工作，IDataType 接口定义�
 
 **Block**
 
-ClickHouse 内部的数据操作是面向 Block 对象进行的，且采用了流的形式。Block 对象可以看作数据表的子集，它是由 Colume、DataType、列名称组成。
+ClickHouse 内部的数据操作是面向 Block 对象进行的，且采用了流的形式。Block 对象可以看作数据表的子集，它是由 Column、DataType、列名称组成。
 
 **Table**
 
-数据表底层设计并没有 Table 对象，直接使用 IStorage 接口指代数据表。IStorage 对 Table 发起的操作语句，根据 AST 查询语句，返回指定列的数据，再讲数据交给 Interpreter 做进一步处理。
+数据表底层设计并没有 Table 对象，直接使用 IStorage 接口指代数据表。IStorage 对 Table 发起的操作语句，根据 AST 查询语句，返回指定列的数据，再将数据交给 Interpreter 做进一步处理。
 
 **Parser**
 
@@ -87,7 +87,7 @@ ClickHouse 提供两种函数：
 
 普通函数（Function）由 IFunction 接口定义，有数十种函数实现，函数作用于每行数据，是无状态的，将会采用向量化的方式批量作用计算。
 
-聚合函数（Aggregate Function）由 IAggregateFunction 接口定义，它是由状态的，聚合函数的状态支持序列化和反序列化，可以在分布式节点之间进行传输，实现增量计算。
+聚合函数（Aggregate Function）由 IAggregateFunction 接口定义，它是有状态的，聚合函数的状态支持序列化和反序列化，可以在分布式节点之间进行传输，实现增量计算。
 
 # 3. 数据定义
 
@@ -107,7 +107,7 @@ ClickHouse 提供两种函数：
 
 字符串 String 长度不限，无须声明大小。
 
-FixStrring 表示固定长度字符串，通过 FixedString(N) 声明，会用 null 字节填充末尾
+FixedString 表示固定长度字符串，通过 FixedString(N) 声明，会用 null 字节填充末尾
 
 UUID 也是一种类型，长度为 32 位，格式为 8-4-4-4-12。
 
@@ -158,15 +158,15 @@ Nullable 是一种修饰符，表示字段可以被写入 Null 值，只能和�
 创建数据库：
 
 ```sql
-CREATE DATABASE [IF NOT OEXISTS] <db_name> [ENGINE = <engine>]
+CREATE DATABASE [IF NOT EXISTS] <db_name> [ENGINE = <engine>]
 ```
 
 目前支持的引擎：
 
 * Ordinary：默认引擎，绝大多数情况都使用，无须声明；
-* DICTIONARY：字段引擎，会自动为所有数据字典创建数据表；
+* DICTIONARY：字典引擎，会自动为所有数据字典创建数据表；
 * Memory：内存引擎，用于存放临时数据；
-* Lazy：日志引擎，智能使用 Log 系列表引擎；
+* Lazy：日志引擎，只能使用 Log 系列表引擎；
 * MySQL：MySQL 引擎，自动拉取远端 MySQL 的数据；
 
 数据库会在磁盘上创建一个文件目录。
@@ -188,7 +188,7 @@ DROP DATABASE [IF EXISTS] <db_name>
 创建表：
 
 ```sql
-CREATE TABLE [IF NOT OEXISTS] [<db_name>.]<table_name> (
+CREATE TABLE [IF NOT EXISTS] [<db_name>.]<table_name> (
   <name> [<type>] [DEFAULT|MATERIALIZED ALIAS expr]
 ) ENGINE = <engine>
 ```
@@ -218,7 +218,7 @@ CREATE TEMPORARY TABLE ...
 普通视图不存储数据，只是一层查询代理，物化视图拥有独立的存储。
 
 ```sql
-CREATE [MATERIALIZED] VIEW [IF NOT OEXISTS] [<db_name>.]<view_name> AS SELECT ...
+CREATE [MATERIALIZED] VIEW [IF NOT EXISTS] [<db_name>.]<view_name> AS SELECT ...
 ```
 
 另外还可以通过 ALTER TABLE 修改表结构，通过 RENAME TABLE 重命名表，TRUNCATE TABLE 清空表数据。
@@ -287,7 +287,7 @@ ALTER TABLE <tb_name> DELETE WHERE <expr>
 ALTER TABLE <tb_name> UPDATE <column>=<value> [,...] WHERE <expr>
 ```
 
-ClickHouse 的修改和删除是一种很重的操作，更适用于批量修改和删除，且不支持事务，修改无法会滚，且这是一个异步后台过程，语句被提交会立即返回。
+ClickHouse 的修改和删除是一种很重的操作，更适用于批量修改和删除，且不支持事务，修改无法回滚，且这是一个异步后台过程，语句被提交会立即返回。
 
 # 5. 查询
 
@@ -342,17 +342,17 @@ SELECT count() * 10 FROM hits SAMPLE 0.1
 SELECT count() FROM hits SAMPLE 10000
 ```
 
-PREWHERE 智能用于 MergeTree 系列表引擎，看作是对 WHERE 的优化，查询时只会读取 PREWHERE 指定的列字段，用来过滤数据，然后在读取 SELECT 的列字段补充属性，在某些场合相比 WHERE 处理的数据量更少，性能更高。
+PREWHERE 只能用于 MergeTree 系列表引擎，看作是对 WHERE 的优化，查询时只会读取 PREWHERE 指定的列字段，用来过滤数据，然后再读取 SELECT 的列字段补充属性，在某些场合相比 WHERE 处理的数据量更少，性能更高。
 
-WITH ROLLUP 按照聚合键从右向左汇总上卷数据，一次生成分组小记和总计。
+WITH ROLLUP 按照聚合键从右向左汇总上卷数据，一次生成分组小计和总计。
 
-WITH CUBE 基于聚合键的所有组合生成小记信息。
+WITH CUBE 基于聚合键的所有组合生成小计信息。
 
 WITH TOTALS 会基于聚合数据对所有数据进行总计，附加在后面。
 
 # 6. 副本
 
-副本是在表级别定义的，只有 ReplicatedMergeTree 表引擎可以使用副本能力，需要登陆各个节点并用 CREATE 语句创建该表。
+副本是在表级别定义的，只有 ReplicatedMergeTree 表引擎可以使用副本能力，需要登录各个节点并用 CREATE 语句创建该表。
 
 ReplicatedMergeTree 表定义，同一个分区之间的 zk_path 相同，replica_name 不同。
 

@@ -238,7 +238,7 @@ type Month int
 func (m Month) String() string
 ```
 
-## 4.5 Weekend
+## 4.5 Weekday
 
 类型定义：
 
@@ -254,7 +254,7 @@ type Weekday int
 func (d Weekday) String() string
 ```
 
-## 4.5 Ticker
+## 4.6 Ticker
 
 类型定义：
 
@@ -278,7 +278,7 @@ func (t *Ticker) Reset(d Duration)
 func (t *Ticker) Stop()
 ```
 
-## 4.6 Timer
+## 4.7 Timer
 
 类型定义：
 

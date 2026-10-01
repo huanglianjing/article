@@ -2,7 +2,7 @@
 
 redo log 叫做重做日志，是 InnoDB 存储引擎独有的日志，用于记录数据库数据更新的记录，用于保证事务的持久性和恢复数据。
 
-MySQL 使用了 WAL（write ahead loggin）技术，先写日志，再写磁盘。当有记录需要更新时，InnoDB 引擎会先把记录写到 redo log，并更新内存，此时更新就算完成了，在系统空闲的时候再将操作记录更新到磁盘里。这个技术避免了每次更新操作都写磁盘带来的很高的 IO 和查找成本。
+MySQL 使用了 WAL（write ahead logging）技术，先写日志，再写磁盘。当有记录需要更新时，InnoDB 引擎会先把记录写到 redo log，并更新内存，此时更新就算完成了，在系统空闲的时候再将操作记录更新到磁盘里。这个技术避免了每次更新操作都写磁盘带来的很高的 IO 和查找成本。
 
 InnoDB 的 redo log 是固定大小的，由配置决定文件数量和每个文件的大小，使用日志文件进行循环写入。当日志写满了，需要暂停任务处理日志，直至有空余空间。
 
@@ -28,13 +28,13 @@ binlog 叫做归档日志，是 MySQL 的 Server 层实现的，用于实现主�
 
 事务执行时，MySQL 会先把日志写到内存中的 binlog cache，事务提交时再把 binlog cache 中该事务完整写到磁盘中的 binlog 文件，binlog cache 内存超过一定大小也会触发写入 binlog 文件。
 
-每个线程有自己的 binlog cache，但公用同一份 binlog 文件。
+每个线程有自己的 binlog cache，但共用同一份 binlog 文件。
 
 写到 binlog cache 执行 write 操作，写到 binlog 文件执行 fsync 操作，它们的时机由参数 sync_binlog 控制。
 
 * sync_binlog=0：每次提交事务都只 write 不 fsync；
 * sync_binlog=1：每次提交事务都 fsync；
-* sync_binlog=N：每次提交事务都 write，累积 N 歌事务后 fsync；
+* sync_binlog=N：每次提交事务都 write，累积 N 个事务后 fsync；
 
 出现 IO 瓶颈时，可以将 sync_binlog 设置为较大的值，如 100 - 1000，但不建议设置为 0。这个方法可以提升性能，但代价是如果机器异常关闭会丢失最近 N 个事务的 binlog 日志。
 
@@ -56,7 +56,7 @@ update t set c = c+1 where ID = 2;
 
 * 执行器先找引擎取 ID=2 这一行，引擎通过主键 ID 从索引找到这一行并返回，如果所在数据页在内存则直接返回，否则从磁盘读入内存后返回；
 * 执行器拿到这行数据，将 c 的值加一，再调用引擎接口写入新数据。
-* 引擎将新数据更新到内存中，同事讲更新记录写到 redo log，此时 redo log 处于 prepare 状态，然后告知执行器执行完成，可以提交事务；
+* 引擎将新数据更新到内存中，同时将更新记录写到 redo log，此时 redo log 处于 prepare 状态，然后告知执行器执行完成，可以提交事务；
 * 执行器生成操作的 binlog，将 binlog 写入磁盘；
 * 执行器调用引擎的提交事务接口，引擎将写入的 redo log 改成 commit 状态，更新完成；
 
@@ -72,7 +72,7 @@ redo log 和 binlog 都可以拆分为 write 和 fsync 两个步骤，MySQL 对�
 
 ![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/mysql_2pc_log_write_fsync.jpg)
 
-当做了错误的数据操作，希望让数据库恢复到之前某时刻的数据，只要有定期做整库备份且保存了近期以来的 binlog，就可以先从备份恢复数据库，在将备份时间到指定时间期间的 binlog 取出来重放，就可以恢复到指定时刻的数据状态了。两阶段提交是为了让 redo log 和 binlog 之间的逻辑一致。
+当做了错误的数据操作，希望让数据库恢复到之前某时刻的数据，只要有定期做整库备份且保存了近期以来的 binlog，就可以先从备份恢复数据库，再将备份时间到指定时间期间的 binlog 取出来重放，就可以恢复到指定时刻的数据状态了。两阶段提交是为了让 redo log 和 binlog 之间的逻辑一致。
 
 如果不用两阶段提交，而只是分别写 redo log 和 binlog，都会产生问题：
 

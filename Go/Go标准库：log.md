@@ -39,7 +39,7 @@ const (
 
 # 3. 类型
 
-## 2.1 Logger
+## 3.1 Logger
 
 类型定义：
 

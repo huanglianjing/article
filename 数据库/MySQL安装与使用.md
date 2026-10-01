@@ -36,7 +36,7 @@ brew services start mysql@8.0
 
 ## 1.3 安装目录
 
-不同系统可以通过安装命令安装、官网下载安装包、源码编辑的方式安装 MySQL ，它们的默认安装路径如下：
+不同系统可以通过安装命令安装、官网下载安装包、源码编译的方式安装 MySQL ，它们的默认安装路径如下：
 
 ```
 # Linux
@@ -86,7 +86,7 @@ key
 key=value
 ```
 
-配置有多个分组如 server、mysqld、mysql_safe、mysql.server、client 等，服务器、客户端、备份工具等程序分别会读取部份分组。每个分组中都有一些单纯键的形式或者键值对形式的配置值。
+配置有多个分组如 server、mysqld、mysql_safe、mysql.server、client 等，服务器、客户端、备份工具等程序分别会读取部分分组。每个分组中都有一些单纯键的形式或者键值对形式的配置值。
 
 也可以在启动命令中以参数的方式指定某些配置：
 
@@ -94,13 +94,13 @@ key=value
 mysqld --key=value
 ```
 
-还可以通过客户端登陆后通过命令设置系统变量，通过可选的 GLOBAL 或 SESSION 来区分设置的是服务器整体操作还是某个客户端连接，不带该参数默认为 SESSION。
+还可以通过客户端登录后通过命令设置系统变量，通过可选的 GLOBAL 或 SESSION 来区分设置的是服务器整体操作还是某个客户端连接，不带该参数默认为 SESSION。
 
 ```mysql
 SET [GLOBAL|SESSION] key = value;
 ```
 
-客户端登陆后，可以查看系统变量：
+客户端登录后，可以查看系统变量：
 
 ```mysql
 SHOW [GLOBAL|SESSION] VARIABLES [LIKE <pattern>];
@@ -120,7 +120,7 @@ show status like '%timeout';
 
 ## 2.1 连接
 
-max-connextions 表示允许的最大客户端连接数。
+max-connections 表示允许的最大客户端连接数。
 
 prompt 设置命令提示符，如 \d 为当前数据库，\h 为服务器地址，\u 为用户名。
 
@@ -178,7 +178,7 @@ bind "^W" ed-delete-prev-word
 
 # 3. 客户端
 
-客户端登陆
+客户端登录
 
 ```bash
 # 输入命令后手动输入密码
@@ -193,8 +193,8 @@ mysql -h<ip> -P<port> -u<user> -p<passwd>
 * -h / --host=：IP 地址，默认使用 localhost 或 127.0.0.1；
 * -P / --port=：端口号，默认使用 3306；
 * -u / --user=：用户名；
-* -p / --password=：密码，参数和密码内容间不能有空格，建议参数后不带内容，在登陆后输入实际密码；
-* -S / --socket=：使用套接字文件登陆，不用输入 IP 和端口号，仅限于登陆本地服务器；
+* -p / --password=：密码，参数和密码内容间不能有空格，建议参数后不带内容，在登录后输入实际密码；
+* -S / --socket=：使用套接字文件登录，不用输入 IP 和端口号，仅限于登录本地服务器；
 * -e \<SQL\>：执行指定 SQL 语句；
 
 查看套接字文件的路径：
@@ -219,7 +219,7 @@ show warnings;
 
 通过 mysqldump 可以导出某个表的表结构和数据到一个 sql 文件，我们也可以将要执行的 SQL 语句写在一个文件中。
 
-登陆客户端后，通过 SOURCE 命令可以执行包含 SQL 语句的脚本文件。
+登录客户端后，通过 SOURCE 命令可以执行包含 SQL 语句的脚本文件。
 
 ```mysql
 SOURCE a.sql
@@ -257,11 +257,11 @@ mysqldump
 
 ```bash
 # 导出数据库
-mysqldump -h$host -P$port -u$user -p ---single-transaction  <database> > a.sql
+mysqldump -h$host -P$port -u$user -p --single-transaction  <database> > a.sql
 
 # 导出表
-mysqldump -h$host -P$port -u$user -p ---single-transaction  <database> <table> > a.sql
-mysqldump -h$host -P$port -u$user -p ---single-transaction  <database> <table> --where="age>=40" > a.sql
+mysqldump -h$host -P$port -u$user -p --single-transaction  <database> <table> > a.sql
+mysqldump -h$host -P$port -u$user -p --single-transaction  <database> <table> --where="age>=40" > a.sql
 ```
 
 # 6. 服务状态

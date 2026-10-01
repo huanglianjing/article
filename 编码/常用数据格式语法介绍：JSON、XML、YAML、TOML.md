@@ -39,7 +39,7 @@ JSON 的对象是一个无序的名称/值对的集合，以左括号`{`开始�
 
 **值**
 
-值（value）包括数组（string）、数值（number）、布尔值（boolean）、null、对象（object）、数组（array）。
+值（value）包括字符串（string）、数值（number）、布尔值（boolean）、null、对象（object）、数组（array）。
 
 JSONC 格式是带注释的 JSON（JSON with Comments），大部分语言标准库的 JSON 解析器不支持 JSONC，需要使用支持它的库。
 
@@ -55,7 +55,7 @@ JSONC 格式是带注释的 JSON（JSON with Comments），大部分语言标准
 
 # 2. XML
 
-XML 全程 Extensible Markup Language，用于结构化存储数据，但是相比于 JSON 更加冗长。
+XML 全称 Extensible Markup Language，用于结构化存储数据，但是相比于 JSON 更加冗长。
 
 XML 在线格式化网站：https://tool.oschina.net/codeformat/xml
 
@@ -129,7 +129,7 @@ websites:
  Perl: use.perl.org
 ```
 
-YAML 大小写敏感，使用缩进表示层级关系，但只允许使用空格而不许使用 tab，缩进空格数组不重要，只要同层级元素对齐即可。
+YAML 大小写敏感，使用缩进表示层级关系，但只允许使用空格而不许使用 tab，缩进空格数目不重要，只要同层级元素对齐即可。
 
 注释是 `#` 至行末的内容。
 

@@ -4,7 +4,7 @@ pgvector 是一个开源的 PostgreSQL 扩展插件，用于在关系型数据�
 
 源码地址：https://github.com/pgvector/pgvector
 
-它的优势在于与 PostgreSQL 生态的继承，从而支持 ACID 事务、表连接等原生特性。
+它的优势在于与 PostgreSQL 生态的集成，从而支持 ACID 事务、表连接等原生特性。
 
 pgvector 为 PostgreSQL 新增 vector 数据类型，支持单精度（vector）、半精度（halfvec）、二进制（bit）、稀疏向量（sparsevec）。
 
@@ -44,7 +44,7 @@ CREATE EXTENSION IF NOT EXISTS vector;
 
 ```postgresql
 SELECT * FROM pg_available_extention;
-SELECT * FROM pg_extention;
+SELECT * FROM pg_extension;
 ```
 
 # 3. 使用

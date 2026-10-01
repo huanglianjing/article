@@ -541,7 +541,7 @@ div {
 - serif 衬线字体，字母每个边缘有一个小的笔触
 - sans-serif 无衬线字体，线条简洁
 - monospace 等宽字体
-- cursive 草书字体，模仿人类笔记
+- cursive 草书字体，模仿人类笔迹
 - fantasy 幻想字体，装饰性
 
 **font-family**

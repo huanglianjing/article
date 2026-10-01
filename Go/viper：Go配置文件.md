@@ -138,7 +138,7 @@ func GetStringMap(key string) map[string]any
 func GetStringMapString(key string) map[string]string
 ```
 
-判断配置是否设置，对与配置的值恰好是该类型的零值，可以用该方法区分这种情况。
+判断配置是否设置，对于配置的值恰好是该类型的零值，可以用该方法区分这种情况。
 
 ```go
 viper.IsSet("env")
@@ -146,7 +146,7 @@ viper.IsSet("env")
 
 将配置映射到一个结构体对象。
 
-映射默认会按照成员名称匹配，切不区分大小写。也可以使用标签的 mapstructure 指定配置的 key。
+映射默认会按照成员名称匹配，且不区分大小写。也可以使用标签的 mapstructure 指定配置的 key。
 
 ```go
 // Config 配置

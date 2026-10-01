@@ -39,7 +39,7 @@ bash a.sh
 
 -p port 指定端口，默认端口22
 
--o stricthostkeychecking=no 首次登陆免输yes登录
+-o stricthostkeychecking=no 首次登录免输yes登录
 
 -i file 使用密钥文件
 
@@ -53,7 +53,7 @@ ssh <user>@<ip> <cmd>
 
 ## sshpass
 
-执行执行命令时，明文指定密码。如登陆远程服务器，远程执行命令或脚本，文件跨机器复制。
+执行命令时，明文指定密码。如登录远程服务器，远程执行命令或脚本，文件跨机器复制。
 
 -p passwd 密码
 
@@ -629,7 +629,7 @@ readelf -d exe | grep 'NEEDED'
 
 跟踪系统调用
 
--e trace= 只跟踪指定调用，如open,close,rean,write,file,process等
+-e trace= 只跟踪指定调用，如open,close,read,write,file,process等
 
 -e signal= 指定系统信号
 
@@ -750,7 +750,7 @@ pstree -p 1234
 
 -c 只输出匹配的进程数量
 
--f 显示完成命令行，而不是进程名
+-f 显示完整命令行，而不是进程名
 
 ```bash
 pgrep <process>
@@ -784,7 +784,7 @@ fg <jobid>
 
 ## bg
 
-将进程转为后台进行
+将进程转为后台运行
 
 ```bash
 bg <jobid>
@@ -1466,7 +1466,7 @@ groupdel <group>
 
 -u uid 更改用户ID
 
--d dir 更改登陆目录
+-d dir 更改登录目录
 
 -s shell 更改登录的shell
 
@@ -1678,7 +1678,7 @@ rm <file>
 
 创建文件链接，默认为硬链接（同文件索引节点）
 
--s 软连接（索引文件）
+-s 软链接（索引文件）
 
 ```bash
 # 创建硬链接
@@ -1807,7 +1807,7 @@ scp <user>@<ip>:<file> <user>@<ip>:<file>
 
 ## rsync
 
-在不同及其间复制文件，其中一个是本机器则不用写用户名和IP。与 scp 的区别在于 scp 是全量拷贝，而 rsync 默认只拷贝变动的文件。
+在不同机器间复制文件，其中一个是本机器则不用写用户名和IP。与 scp 的区别在于 scp 是全量拷贝，而 rsync 默认只拷贝变动的文件。
 
 -r 复制目录
 

@@ -81,7 +81,7 @@ Kafka最早的解决方案是通过ZooKeeper的watcher实现的。
 
 如果消费者已经保存了与消费组对应的GroupCoordinator节点的信息，并且之前与它之间的网络连接是正确的，那么就不需要发送请求，可以直接进入第二阶段。
 
-那么Kafka是怎么决定每个消费组归属于Kafka集群中的哪个borker管理的呢？将每个消费组的groupId计算哈希值，算出其属于主题__consumer_offsets的分区编号，再寻找此分区leader副本所在的broker节点，这个broker节点就是消费组对应的GroupCoordinator节点。
+那么Kafka是怎么决定每个消费组归属于Kafka集群中的哪个broker管理的呢？将每个消费组的groupId计算哈希值，算出其属于主题__consumer_offsets的分区编号，再寻找此分区leader副本所在的broker节点，这个broker节点就是消费组对应的GroupCoordinator节点。
 
 如下图为例，消费者向随机一个broker 1发送GroupCoordinatorRequest请求，broker 1返回GroupCoordinatorResponse，消息中包含了broker 3，也就是说该节点包含了消费组属于的GroupCoordinator。
 
@@ -396,7 +396,7 @@ protected Map<String, ByteBuffer> performAssignment(String leaderId,
 }
 ```
 
-而普通消费者的逻辑则简单的多，只是简单地发送SyncGroupRequest请求，入口是ConsumerCoordinator的onJoinFollower()方法。代码如下：
+而普通消费者的逻辑则简单得多，只是简单地发送SyncGroupRequest请求，入口是ConsumerCoordinator的onJoinFollower()方法。代码如下：
 
 ```java
 private RequestFuture<ByteBuffer> onJoinFollower() {
@@ -511,7 +511,7 @@ protected void onJoinComplete(int generation,
 
 进入这个阶段之后，消费组中的所有消费者就会处于正常工作状态。
 
-消费者通过向GroupCoordinator发送心跳来位置它们与消费组的从属关系，以及对分区的所有权。如果消费者停止发送心跳的时间足够长，整个会话就会被判定为过期，GroupCoordinator会认为这个消费者已经死亡，就会重新触发一次再均衡行为。如果消费者主动调用unsubscribe()方法取消对某些主题的订阅，也会触发再均衡行为。
+消费者通过向GroupCoordinator发送心跳来维持它们与消费组的从属关系，以及对分区的所有权。如果消费者停止发送心跳的时间足够长，整个会话就会被判定为过期，GroupCoordinator会认为这个消费者已经死亡，就会重新触发一次再均衡行为。如果消费者主动调用unsubscribe()方法取消对某些主题的订阅，也会触发再均衡行为。
 
 消费者心跳间隔时间由参数heartbeat.interval.ms指定，默认值为3000，即3秒。
 
@@ -633,7 +633,7 @@ public Map<String, List<TopicPartition>> assign(Map<String, Integer> partitionsP
 
 ### RoundRobinAssignor分配策略
 
-将消费组的所有消费者及其订阅的所有主题的分区按字典许排序，通过轮询逐个将分区分配给消费者。
+将消费组的所有消费者及其订阅的所有主题的分区按字典序排序，通过轮询逐个将分区分配给消费者。
 
 解决了RangeAssignor分配策略中每个主题3个分区的不均衡问题，分配结果如下：
 

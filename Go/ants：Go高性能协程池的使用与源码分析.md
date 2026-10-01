@@ -17,7 +17,7 @@ ants 是一个高性能且低损耗的 goroutine 池，实现了对大规模 gor
 
 写 go 并发程序的时候如果程序会启动大量的 goroutine，势必会消耗大量的系统资源（内存，CPU），通过使用 ants，可以实例化一个 goroutine 池，复用 goroutine，节省资源，提升性能。
 
-但 ants 并不保证提交的任务被执行的顺序，执行的顺序也不是和提交的顺序保持一致，因为在 ants 是并发地处理所有提交的任务，提交的任务会被分派到正在并发运行的 workers 上去，因此那些任务将会被并发且无序地被执行。
+但 ants 并不保证提交的任务被执行的顺序，执行的顺序也不是和提交的顺序保持一致，因为 ants 是并发地处理所有提交的任务，提交的任务会被分派到正在并发运行的 workers 上去，因此那些任务将会被并发且无序地被执行。
 
 以下是原作者对于原生 goroutine 和 ants 进行的吞吐量和内存消耗的 benchmark 测试。使用 ants 在吞吐性能上相较于原生 goroutine 有 2-6 倍的性能优势，而内存消耗则有 10-20 倍的节省优势。
 
@@ -33,7 +33,7 @@ ants 是一个高性能且低损耗的 goroutine 池，实现了对大规模 gor
 go get -u github.com/panjf2000/ants/v2
 ```
 
-## 2.3 常用方法
+## 2.2 常用方法
 
 这里介绍了协程池最基本常用的创建、提交任务、释放等方法。
 
@@ -54,7 +54,7 @@ pool.Release()
 pool.Reboot()
 ```
 
-## 2.2 代码示例：使用 Submit 函数提交任务
+## 2.3 代码示例：使用 Submit 函数提交任务
 
 使用示例如下，引用自官方仓库 README 文件的使用示例。
 
@@ -107,7 +107,7 @@ running goroutines: 1000
 finish all tasks.
 ```
 
-## 2.3 代码示例：创建指定任务函数的协程池
+## 2.4 代码示例：创建指定任务函数的协程池
 
 创建一个协程池并指定任务函数，且设置协程池的容量为10。每次循环调用 Invoke 方法获取一个 worker，并用传入的参数作为执行任务的参数。
 
@@ -164,7 +164,7 @@ running goroutines: 10
 finish all tasks, result is 499500
 ```
 
-## 2.4 代码示例：创建 MultiPool
+## 2.5 代码示例：创建 MultiPool
 
 创建 MultiPool 来执行任务，MultiPool 内部包含一个协程池数组，定义一个策略算法来从这些协程池中获取 worker，目前支持的算法有RoundRobin算法（轮询）和最少任务算法。
 
@@ -204,7 +204,7 @@ func main() {
 }
 ```
 
-## 2.5 默认协程池
+## 2.6 默认协程池
 
 为了方便使用，很多 Go 库都喜欢提供其核心功能类型的一个默认实现。可以直接通过库提供的接口调用，如 net/http 和 ants。
 
@@ -243,7 +243,7 @@ func main() {
 }
 ```
 
-## 2.6 配置选项
+## 2.7 配置选项
 
 ants 支持在 NewPool、NewPoolWithFunc 创建协程池时设置配置选项，定制化协程池。
 
@@ -369,7 +369,7 @@ var (
 
 ## 3.2 Pool
 
-通过上面的代码示例，可以知道 ants 创建协程池有 ants.NewPool 和 ants.NewPoolWithFunc 两种，它们分别为提交任务时传递执行的函数，以及预先指定执行函数。它们对应的的结构体分别为 Pool 和 PoolWithFunc，下面我们先来介绍 Pool，后面再和 PoolWithFunc 做比较。
+通过上面的代码示例，可以知道 ants 创建协程池有 ants.NewPool 和 ants.NewPoolWithFunc 两种，它们分别为提交任务时传递执行的函数，以及预先指定执行函数。它们对应的结构体分别为 Pool 和 PoolWithFunc，下面我们先来介绍 Pool，后面再和 PoolWithFunc 做比较。
 
 该文件定义了结构体 Pool，用来表示一个协程池，它可以接收多个任务并并发地执行它们，同时在一个可重复使用的协程池中限制执行的协程数量。
 
@@ -850,7 +850,7 @@ type goWorkerWithFunc struct {
 
 PoolWithFunc 和 Pool 的区别在于保存了传入的函数对象，而 goWorkerWithFunc 以 interface{} 表示参数作为通道类型，而非函数作为通道类型。
 
-## 3.8 自旋锁
+## 3.7 自旋锁
 
 自旋锁是 Linux 内核中一种较为常见的锁机制，一般的锁在加锁失败时会休眠等待，以让出CPU处理其它事情，而自旋锁则是会忙等待，避免加锁和解锁导致的线程切换，对于很快就能获得锁的场景可以提升性能。
 

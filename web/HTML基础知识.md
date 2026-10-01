@@ -23,7 +23,7 @@ HTML是用来描述网页的一种语言，全称超文本标记语言(Hyper Tex
 </html>
 ```
 
-整个文件由html标签包着，其中由分为首部和主体两部分，分别用head标签和body标签包裹。
+整个文件由html标签包着，其中又分为首部和主体两部分，分别用head标签和body标签包裹。
 
 首部告诉浏览器关于网页的信息，如页面标题，首部包括\<head\>和\</head\>之间的所有内容。其中的title标签定义了网页的标题，meta标签指定了字符编码。
 
@@ -174,7 +174,7 @@ link标签定义外部资源。
 
 **样式**
 
-style标签定了HTML文档的样式信息。
+style标签定义了HTML文档的样式信息。
 
 ```html
 <style type="text/css"></style>
@@ -517,7 +517,7 @@ iframe元素用于在网页内显示网页。
 
 ![html_form](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/web/html_form.png)
 
-点击提交按钮，会讲上面文本框和单选按钮输入的key=value对，传给网页参数发送请求，例如会发送一个请求`a.html?input+1=val1&input+2=val2&sex=male`。
+点击提交按钮，会将上面文本框和单选按钮输入的key=value对，传给网页参数发送请求，例如会发送一个请求`a.html?input+1=val1&input+2=val2&sex=male`。
 
 form标签的action属性定义提交表单时执行的动作，如`<form action="action_page.php">`将会指定某个服务器脚本来处理被提交的表单，不指定action属性则设置为当前网页处理表单。
 
@@ -592,7 +592,7 @@ section元素和article元素是可以包含对方或者自包含的。
 
 ## 4.2 外部样式表
 
-当同一个样式需要被应用到很多页面的时候，可以选择外部样式表，定义一个公共的css文件来杯多个HTML文件引用，在每个HTML文件首部引用该css文件。
+当同一个样式需要被应用到很多页面的时候，可以选择外部样式表，定义一个公共的css文件来被多个HTML文件引用，在每个HTML文件首部引用该css文件。
 
 ```html
 <head>

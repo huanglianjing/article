@@ -57,7 +57,7 @@ comment
 
 ### 1.2.2 变量
 
-变量声明和复制：
+变量声明和赋值：
 
 ```javascript
 // 声明
@@ -182,7 +182,7 @@ obj.method();
 
 逻辑与（&&）、逻辑或（||）、逻辑非（!）。
 
-### 1.2.3 条件语句
+### 1.2.4 条件语句
 
 **条件语句**
 
@@ -219,7 +219,7 @@ for (condition; condition; condition) {
 }
 ```
 
-### 1.2.4 函数
+### 1.2.5 函数
 
 参数（argument）用逗号分隔，也可以不传。
 
@@ -275,7 +275,7 @@ document.write(text);
 document.createElement("p"); // 创建了一个p元素
 ```
 
-创建文本节点，再将该节点插入元素节点作为字节点。
+创建文本节点，再将该节点插入元素节点作为子节点。
 
 ```javascript
 document.createTextNode(text);

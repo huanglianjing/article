@@ -32,7 +32,7 @@ func Add(a interface{}, b interface{}) interface{} {
 
 前者对于每一种类型都需要重新实现一个新的函数，代码开发量比较大，而后者使用反射则会对性能有所影响，且也需要在一个函数里面罗列各种类型。
 
-如果使用泛型，则会变得简洁的多。
+如果使用泛型，则会变得简洁得多。
 
 ```go
 func Add[T int | float32 | float64](a, b T) T {
@@ -52,7 +52,7 @@ type any = interface{}
 
 泛型函数的定义格式：`func FunctionName[T Constraint](param T) { ... }`
 
-范型类型的定义格式：`type TypeName[T Constraint] ...`
+泛型类型的定义格式：`type TypeName[T Constraint] ...`
 
 类型参数这里可以定义一到多个类型。
 
@@ -186,7 +186,7 @@ func (p *Person[T]) Say(s T) {
 }
 ```
 
-范型类型可以通过嵌套，定义出更加复杂的类型。
+泛型类型可以通过嵌套，定义出更加复杂的类型。
 
 ```go
 type Slice[T int|string|float32|float64] []T

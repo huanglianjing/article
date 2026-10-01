@@ -29,7 +29,7 @@ make argvar=foobar
 * -B：强制执行所有目标；
 * -j n：指定并发数；
 
-Makefile 中可以包含其他的 Makefile 文件，会讲包含的 Makefile 文件完全展开。包含的文件可以使用本文件中定义的变量。
+Makefile 中可以包含其他的 Makefile 文件，会将包含的 Makefile 文件完全展开。包含的文件可以使用本文件中定义的变量。
 
 ```makefile
 include <makefile>
@@ -157,7 +157,7 @@ main.o: main.c
 	gcc -c main.c -o $@
 ```
 
-`$*` 表示构建目标去掉后缀的部份。
+`$*` 表示构建目标去掉后缀的部分。
 
 ```makefile
 # $* 表示 main

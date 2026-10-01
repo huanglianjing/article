@@ -53,7 +53,7 @@ SELECT col1, col2, col3 FROM TABLE1 Where a > 100;
 
 **mysqldump 备份**
 
-如果表比较大，可以用 mysqldump 导出表的全部或部份数据。
+如果表比较大，可以用 mysqldump 导出表的全部或部分数据。
 
 ```bash
 mysqldump -h$host -P$port -u$user --add-locks=0 --no-create-info --single-transaction  --set-gtid-purged=OFF <database> <table> --where="a>900" --result-file=a.sql
@@ -217,7 +217,7 @@ SOURCE mysql.sql
 设置从库同步，这里设置同步点文件和位置：
 
 ```mysql
-CHANG MASTER TO master_host='', master_user='',master_port=, master_password='', master_log_file='', master_log_pos=;
+CHANGE MASTER TO master_host='', master_user='',master_port=, master_password='', master_log_file='', master_log_pos=;
 ```
 
 重新开启同步，查看同步状态：

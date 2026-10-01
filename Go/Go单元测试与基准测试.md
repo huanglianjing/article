@@ -18,7 +18,7 @@ go test 命令参数如下：
 
 -run=pattern 只跑哪些单元测试用例
 
--bench=patten 只跑哪些性能测试用例
+-bench=pattern 只跑哪些性能测试用例
 
 -benchmem 是否在性能测试的时候输出内存情况
 
@@ -218,7 +218,7 @@ FAIL    go-test/src/tool        0.182s
 
 ## 2.3 测试组
 
-可以讲多组测试用例合并到一起，放到一个测试函数内进行测试。
+可以将多组测试用例合并到一起，放到一个测试函数内进行测试。
 
 ```go
 // src/tool/tool_test.go
@@ -453,7 +453,7 @@ ok      go-test/src/tool        1.412s
 
 -benchmem 参数可以得到内存分配的统计数据。
 
-这里的 BenchmarkConcat-8 表示 GOMAXPROCS = 19056243 表示调用 Concat 函数的次数，59.41 ns/op 表示每次调用的平均耗时，6 B/op 表示每次调用分配的内存大小，2 allocs/op 表示每次调用进行了多少次内存分配。
+这里的 BenchmarkConcat-8 表示 GOMAXPROCS = 8，19056243 表示调用 Concat 函数的次数，59.41 ns/op 表示每次调用的平均耗时，6 B/op 表示每次调用分配的内存大小，2 allocs/op 表示每次调用进行了多少次内存分配。
 
 ## 3.3 重置时间
 

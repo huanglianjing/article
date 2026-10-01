@@ -12,7 +12,7 @@
 * 支持对集合和索引进行压缩，减少磁盘空间消耗；
 * 支持多文档 ACID 事务，提供读未提交、读提交、快照隔离这几种隔离级别；
 
-WiredTiger 默认的隔离级别为快照隔离，也是 MongoDB 对事物采用的隔离级别。
+WiredTiger 默认的隔离级别为快照隔离，也是 MongoDB 对事务采用的隔离级别。
 
 # 2. 文件结构
 
@@ -66,7 +66,7 @@ WiredTiger 实现数据的二级缓存，第一层是操作系统层级的页面
 在读取数据时：
 
 1. 数据库发起 buffer I/O 读操作，操作系统将磁盘数据页加载到页缓存区；
-2. 引擎层读取页缓存区数据，进行解压后放到内部缓存出；
+2. 引擎层读取页缓存区数据，进行解压后放到内部缓存中；
 3. 在内存完成匹配查询，将结果返回给应用；
 
 如果数据已经存储在内部缓存中， MongoDB 可以直接从内存中返回数据。内部缓存的默认大小是机器内存的一半，通过参数 wiredTigerCacheSize 指定。
@@ -79,7 +79,7 @@ WiredTiger 使用 MVCC（多版本并发控制），在操作开始时，会向�
 
 WiredTiger 对数据的持久化分为两块：
 
-* CheckPouint 机制：建立 CheckPoint 时，会在内存建立所有数据的一致性快照，然后将快照覆盖的所有数据变化通过 fsync 持久化到数据文件，默认每 60s 建立一次 CheckPoint；
+* CheckPoint 机制：建立 CheckPoint 时，会在内存建立所有数据的一致性快照，然后将快照覆盖的所有数据变化通过 fsync 持久化到数据文件，默认每 60s 建立一次 CheckPoint；
 * Journal 日志：通过预写日志（write ahead log）机制，将每个写操作的日志写入 Journal 缓冲区，该缓冲区会频繁将日志持久化到磁盘上，默认每 100ms 执行一次持久化；
 
 ![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/wiredtiger_checkpoint_journal.jpg)
