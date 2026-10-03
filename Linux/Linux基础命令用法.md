@@ -1428,6 +1428,24 @@ sudo su
 sudo -u <user> <cmd>
 ```
 
+## runuser
+
+以其他用户身份运行命令，仅限 root 用户使用，且无需密码。
+
+-u, --user \<user\> 置顶目标用户
+
+-l, --login \<user\> 启动一个登陆 shell
+
+-c, --command \<command\> 执行脚本
+
+```bash
+# -- 用于分隔 runuser 选项和要执行的命令，防止误读
+runuser -u nginx -- whoami
+
+# 启动一个独立的 shell 来执行指定命令
+runuser -l oracle -c 'ulimit -SHa'
+```
+
 ## useradd
 
 创建用户

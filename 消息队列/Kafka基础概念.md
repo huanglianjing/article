@@ -20,14 +20,18 @@ Kafka有三大角色：
 
 ## 2.1 体系架构
 
-![kafka_architecture](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_architecture.png)
+下图为Kafka的体系架构。一个Kafka体系架构包含若干Producer、若干Broker、若干Consumer，以及一个ZooKeeper集群。
 
-上图为Kafka的体系架构。一个Kafka体系架构包含若干Producer、若干Broker、若干Consumer，以及一个ZooKeeper集群。
+![kafka_architecture](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_architecture.png)
 
 - ZooKeeper：负责集群元数据的管理、控制器的选举。
 - 生产者Producer：将消息发送到Broker。
 - 消费者Consumer：从Broker订阅主题并消费消息。
 - 服务代理节点Broker：将收到的消息存储到磁盘。Broker可以看作一个Kafka服务节点或Kafka服务实例，可以将多个Broker运行在不同的服务器上，也可以运行在同一个服务器但是配置不同的端口。
+
+Kafka 从 2.8 版本开始引入 KRaft，到 4.0 版本彻底移除了 ZooKeeper 的依赖，转而使用 KRaft 存储和管理元数据。
+
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/message_queue/kafka_architecture_kraft.jpg)
 
 ## 2.2 消息和批次
 
@@ -70,8 +74,8 @@ Kafka的消息以主题进行归类，这是一个逻辑上的概念。生产者
 以下是三个有含义的偏移量：LogStartOffset、HW、LEO。
 
 - LogStartOffset为0，是日志文件的起始处，也就是第一条消息。
-- HW（High Watermark）俗称高水位，标识了一个offset，消费者只能拉取到HW之前的消息。
-- LEO（Log End Offset）标识当前日志文件下一条待写入消息的offset，相当于当前日志分区最后一条消息的offset加1。分区的ISR集合每个副本都会维护自身的LEO，而ISR集合中最小的LEO就是分区的HW。
+- LEO（Log End Offset）是副本级别的，标识当前日志文件下一条待写入消息的offset，相当于当前日志分区最后一条消息的offset加1。分区的ISR集合每个副本都会维护自身的LEO，而ISR集合中最小的LEO就是分区的HW。
+- HW（High Watermark，高水位）是分区级别的，是某个分区所有 ISR 副本同步 LEO 的最小值，是对外的已提交和可见的位置，消费者只能拉取到HW之前的消息。
 
 下图展示了一个日志文件，其中HW为6，LEO为9，因此消费者只能拉取偏移量0到5的消息，而下一条写入的消息偏移量将会是9。
 

@@ -1,23 +1,36 @@
 - title: "Kafka再均衡原理及源码分析"
   date: "2021-10-13 02:39:00"
   tags:
+    - "消息队列"
     - "Kafka"
     - "再均衡"
     - "rebalance"
 - title: "Kafka基础概念"
   date: "2021-09-28 09:56:21"
   tags:
+    - "消息队列"
     - "Kafka"
 - title: "Kafka安装、配置与使用"
   date: "2021-10-26 03:33:03"
   tags:
+    - "消息队列"
     - "Kafka"
 - title: "Kafka对ZooKeeper的依赖与移除"
   date: "2021-10-03 23:47:51"
   tags:
+    - "消息队列"
     - "Kafka"
     - "ZooKeeper"
 - title: "Kafka常见问题"
   date: "2021-10-28 22:55:17"
   tags:
+    - "消息队列"
     - "Kafka"
+- title: "主流消息队列介绍与对比"
+  date: "2026-10-03 21:20:24"
+  tags:
+    - "消息队列"
+    - "Kafka"
+    - "RocketMQ"
+    - "RabbitMQ"
+    - "Pulsar"
