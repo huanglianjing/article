@@ -44,7 +44,7 @@ $ vi file
 
 ### 保存配置
 
-Vim的配置保存在**/etc/vim/vimrc**或**~/.vimrc**中，这样每次打开Vim之后保存的配置就生效了。
+Vim的配置保存在 `/etc/vim/vimrc` 或 `~/.vimrc` 中，这样每次打开Vim之后保存的配置就生效了。
 
 以下是我的Vim配置：
 
