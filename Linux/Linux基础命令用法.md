@@ -766,7 +766,7 @@ pidof <process>
 
 ## jobs
 
-当前终端在后台运行的进程
+当前终端在后台运行的进程 jobid
 
 -l 显示pid
 
@@ -776,7 +776,7 @@ jobs
 
 ## fg
 
-将进程转为前台运行
+将 jobs 显示的挂起进程转为前台运行
 
 ```bash
 fg <jobid>
@@ -784,7 +784,7 @@ fg <jobid>
 
 ## bg
 
-将进程转为后台运行
+将 jobs 显示的挂起进程转为后台运行
 
 ```bash
 bg <jobid>

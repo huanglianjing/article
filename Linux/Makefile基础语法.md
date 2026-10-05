@@ -27,7 +27,7 @@ make argvar=foobar
 * -s：静默模式，不输出规则中的命令；
 * -n：输出要执行的命令而不执行；
 * -B：强制执行所有目标；
-* -j n：指定并发数；
+* -j \<n\>：指定并发数；
 
 Makefile 中可以包含其他的 Makefile 文件，会将包含的 Makefile 文件完全展开。包含的文件可以使用本文件中定义的变量。
 
@@ -39,6 +39,18 @@ Makefile 中的注释和 shell 一样，都是以 `#` 开头直至行末。
 
 ```makefile
 # comment
+```
+
+Makefile 会先打印命令本身，然后再执行该命令。命令前使用 `@` 使命令静默执行，不会显示该命令。
+
+```makefile
+@<cmd>
+```
+
+默认情况下，命令返回非 0 退出码时，会立即报错并停止。命令前使用 `-` 可以忽略该命令的错误，继续执行后续命令。`@` 和 `-` 可以组合使用。
+
+```makefile
+-<cmd>
 ```
 
 # 2. 规则
@@ -119,7 +131,7 @@ CC2 = $(CC) # 值为 g++，因为 CC 最后的值是 g++
 CC = g++
 ```
 
-`:=` 赋值运算符的值和其在 Makefile 中的位置有关。
+`:=` 赋值运算符的值是命令执行到该行时的 value 值，而非 value 最终的值。
 
 ```makefile
 <var-name> := <var-value>
@@ -189,6 +201,19 @@ main: main.o func.o
 	gcc $? -o main
 ```
 
+将列表中的每个成员进行替换。
+
+```makefile
+$(VAR:pattern=replacement)
+
+# 将 .cpp 文件替换为 .o 文件
+SRCS = a.cpp b.cpp c.cpp
+OBJS = $(SRCS:%.cpp=%.o)
+
+# 等价于 patsubst 这个写法
+OBJS = $(patsubst %.cpp,%.o,$(SRCS))
+```
+
 # 4. 函数
 
 Makefile 提供了一些函数，函数的格式如下，函数和参数之间用空格分隔，参数之间用逗号分隔。
@@ -256,6 +281,20 @@ CFILES = $(wildcard *.c) # 获取当前目录所有.c文件
 ```makefile
 SRCS = main.c utils.c helper.c
 OBJS = $(patsubst %.c,%.o,$(SRCS)) # 将每个.c文件替换为.o文件
+```
+
+`foreach` 对列表的每个元素执行同一段文本展开，并把结果拼接起来。list 是要遍历的列表，取出的每个元素临时赋值给 var，然后执行 text 的文本。
+
+```makefile
+$(foreach var,list,text)
+
+# 对每个名字接上 .o 后缀
+LIST = a b c
+RESULT = $(foreach x,$(LIST),$(x).o)
+
+# 对每个目录做 wildcard，把结果拼接起来
+DIRS = src lib test
+RESULT = $(foreach d,$(DIRS),$(wildcard $(d)/*.c))
 ```
 
 # 5. 条件分支

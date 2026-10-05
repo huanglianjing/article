@@ -8,6 +8,8 @@ Redis Cluster 是一种无中心化的分布式架构，通过将数据分散到
 
 # 2. 架构
 
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_cluster_architecture.jpg)
+
 ## 2.1 数据分区
 
 分布式数据库需要把整个数据集按照分区规则，映射到多个节点上，每个节点负责整体数据的一个子集。
