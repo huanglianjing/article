@@ -2,7 +2,7 @@
 
 Redis 采用**单线程事件循环 + 内存数据结构**的设计：所有客户端的命令由一个主线程串行执行，既避免了多线程加锁与上下文切换的开销，又保证了单条命令的原子性。数据常驻内存以获得极高的读写性能，同时借助持久化模块将数据落盘，保证可靠性。
 
-Redis 服务端在单个进程内的核心组成与请求处理链路如下：
+Redis 服务端进程的核心组成与请求处理链路如下：
 
 ![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_process.jpg)
 
@@ -70,7 +70,9 @@ Redis 会根据数据规模自动选择合适的底层编码（如 listpack、�
 
 此外，Redis **启动时**会读取磁盘上的 AOF 或 RDB 文件，将持久化数据加载回内存，完成数据恢复。
 
-# 2. 服务架构
+# 2. 进程和线程间架构
+
+![](https://article-1304941664.cos.ap-guangzhou.myqcloud.com/database/redis_process_thread.jpg)
 
 目前 Redis 的线程/进程有如下：
 

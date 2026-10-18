@@ -417,6 +417,9 @@ systemctl enable <serv>
 # 取消服务开机启动
 systemctl disable <serv>
 
+# 查看配置文件内容
+systemctl cat <serv>
+
 # 列出当前加载的内容
 systemctl list-units # 单元
 systemctl list-sockets # socket单元

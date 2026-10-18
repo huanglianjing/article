@@ -218,6 +218,8 @@ OR 条件可能会导致索引失效和全表扫描，可以改为 UNION，以�
 
 innodb_buffer_pool_size 配置 buffer pool 的大小，更大的 buffer pool 可以容纳更多的热数据，从而提高数据库性能，但是要注意避免过大导致使用到 swap 内存。
 
+thread_cache_size 配置服务端线程缓存大小，sort_buffer_size 配置每个连接使用 buffer 时分配的内存大小，query_cache_size 是查询缓存的大小，query_cache_limit 是单次查询缓冲区的大小。
+
 max_connections 配置服务器最大连接数量，默认为 151，可以调高以支持更多连接。
 
 wait_timeout 配置客户端超时时间，默认为 28800 秒即 8 小时，可以调低以及时释放不活动连接。
@@ -229,6 +231,10 @@ slow_query_log、slow_query_log_file、long_query_time 打开慢查询日志，�
 客户端连接池大小通常是在应用程序中进行配置的，复用连接可以减少和服务器建立连接的额外开销，但连接池不是越大越好，盲目加大很可能会加大服务端性能开销降低效率，一个推荐的连接池大小是 CPU 核心数 * 2 + 1。
 
 # 5. 硬件优化
+
+**增加物理内存**
+
+通过加大物理内存，可以将更多的热数据保存在内存 buffer pool 中，减少磁盘 IO， 从而提高性能。
 
 **使用固态硬盘**
 
